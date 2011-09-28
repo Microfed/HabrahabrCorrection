@@ -6,6 +6,7 @@ $(function() {
     const TYPE_OF_ERROR_COMMA = 'Запятые';
     const THERULES_URL = '<a href="http://therules.ru/';
     const HABRAHABR_URL = 'habrahabr.ru';
+    const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
 
     if (IsCurrentUrlCorrect()) {
         appendStyle();
@@ -185,7 +186,7 @@ $(function() {
         addEventSubTypeOfError_Change(messageTextarea);
     }
 
-    function addEventTypeOfError_Change(messageTextarea) {
+    function addEventTypeOfError_Change() {
         $('#type-of-error').change(function() {
             var errorType = getErrorType();
             var subtypeOfErrorSelect = $('#subtype-of-error');
@@ -221,7 +222,7 @@ $(function() {
         })
     }
 
-    function addEventSubTypeOfError_Change(messageTextarea) {
+    function addEventSubTypeOfError_Change() {
         $('#subtype-of-error').change(function() {
             var messageToAppend = '\n';
             var topic = '';
@@ -290,7 +291,7 @@ $(function() {
     }
 
     function getMessageText() {
-        return $('#dialog-message-text').val()
+        return $('#dialog-message-text').val() + AD_TEXT
     }
 
     function addTextToMessage(text) {

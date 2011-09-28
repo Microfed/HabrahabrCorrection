@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><title>Настроки расширения HabraCorrection</title></head>
+<script type="text/javascript">
+
+    // Saves options to localStorage.
+    function save_options() {
+        var isAdvtAttachToMessage = document.getElementById('isAdvtAttachToMessage').checked
+
+        localStorage["isAdvtAttachToMessage"] = isAdvtAttachToMessage;
+
+        // Update status to let user know options were saved.
+        var status = document.getElementById("status");
+        status.innerHTML = "Сохранено";
+        setTimeout(function() {
+            status.innerHTML = "";
+        }, 750);
+    }
+
+    // Restores select box state to saved value from localStorage.
+    function restore_options() {
+        var isAdvtAttachToMessage = localStorage["isAdvtAttachToMessage"];
+        var result = false;
+
+        if (isAdvtAttachToMessage == 'true') {
+            result = true;
+        }
+        document.getElementById('isAdvtAttachToMessage').checked = result;
+    }
+
+</script>
+<body onload="restore_options()">
+<h3>Настроки расширения HabraCorrection</h3>
+<h4>Формирование сообщения об ошибке</h4>
+Будет в версии 0.1.6
+<input type="checkbox" id="isAdvtAttachToMessage"/> Добавлять информацию о расширении в конец </br>
+сообщения об ошибке ("<sub>Сделано с помощью <a
+        href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>")
+<br><br>
+<button onclick="save_options()">Сохранить</button>
+<p id="status"></p>
+</body>
+</html>
