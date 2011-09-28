@@ -52,7 +52,7 @@ $(function() {
     }
 
     function getArticleTitle() {
-        var title = $('.entry-title.single-entry-title span:eq(0)');
+        var title = $('.entry-title.single-entry-title span:last');
         return title.text();
     }
 
