@@ -24,8 +24,8 @@ $(function() {
         if (IsCurrentUrlCorrect()) {
             var articleUrl = document.baseURI;
             var author = getAuthorName();
-            var title = "Ошибка/опечатка в статье " + articleUrl;
-            var content = getContentText();
+            var title = 'Ошибка в статье "' + getArticleTitle() + '"';
+            var content = getContentText(articleUrl);
             resetDialogFields();
             setDialogContent(author, title, content);
             showDialog(author, title)
@@ -51,11 +51,16 @@ $(function() {
         return txt;
     }
 
+    function getArticleTitle() {
+        var title = $('.entry-title.single-entry-title span:eq(0)');
+        return title.text();
+    }
+
     /*
      Возвращает выделенный текст, как цитату.
      */
-    function getContentText() {
-        return "<blockquote>" + getSelectedText() + "</blockquote>";
+    function getContentText(articleUrl) {
+        return 'Ошибка в статье <a href="' + articleUrl + '">' + getArticleTitle() + '</a>\n<blockquote>' + getSelectedText() + '</blockquote>';
     }
 
     /*
@@ -211,7 +216,8 @@ $(function() {
                 subtypeOfErrorSelect.append(listToAppend);
                 subtypeOfErrorSelect.show()
             }
-            messageTextarea.val(messageTextarea.val() + messageToAppend)
+
+            addTextToMessage(messageToAppend);
         })
     }
 
@@ -229,7 +235,7 @@ $(function() {
                 messageToAppend += THERULES_URL + 'hyphen' + topic + '/">' + TYPE_OF_ERROR_SPELLING + '</a>'
             }
 
-            messageTextarea.val(messageTextarea.val() + messageToAppend)
+            addTextToMessage(messageToAppend);
         })
     }
 
@@ -263,9 +269,12 @@ $(function() {
         $('#dialog').dialog({
             width: 500
         }, {
-            height: 350
+            height: 360
         }, {
             buttons: {
+                "Опечатка!": function () {
+                    addTextToMessage("\nОпечатка!");
+                },
                 "Отправить": function () {
                     var data = getData(name, title);
                     sendDataPost(data, URL_SEND_MESSAGE);
@@ -276,10 +285,17 @@ $(function() {
                 }
             }
         });
+
+        $('.ui-dialog-buttonpane').find('button:contains("Опечатка!")').css("margin-right", "180px");
     }
 
     function getMessageText() {
         return $('#dialog-message-text').val()
+    }
+
+    function addTextToMessage(text) {
+        var messageTextarea = $('#dialog-message-text');
+        messageTextarea.text(messageTextarea.val(messageTextarea.val() + text))
     }
 
     function getData(name, title) {

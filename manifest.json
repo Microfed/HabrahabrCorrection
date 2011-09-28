@@ -1,6 +1,6 @@
 {
     "name": "HabraCorrection",
-    "version": "0.0.1",
+    "version": "0.1.3",
     "description": "Помогает сообщать авторам статей на Хабрахабре об их ошибках.",
     "icons": {
         "128": "/i/icon-128.png",
@@ -13,7 +13,6 @@
         }
     ],
     "permissions": [
-        "tabs",
         "http://habrahabr.ru/*"
     ]
 }
