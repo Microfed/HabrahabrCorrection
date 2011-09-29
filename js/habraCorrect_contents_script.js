@@ -53,7 +53,10 @@ $(function() {
     }
 
     function getArticleTitle() {
-        var title = $('.entry-title.single-entry-title span:last');
+        var title = $('.entry-title.single-entry-title span');
+        if (title.text() == '') {
+            title = title.next(); //fix to https://github.com/Microfed/HabrahabrCorrection/issues/1
+        }
         return title.text();
     }
 
