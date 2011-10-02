@@ -1,3 +1,27 @@
+/*function loadScript(url, callback) {
+
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+
+    script.onload = tryReady(0, callback)
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+function tryReady(time_elapsed, callback) {
+    // Continually polls to see if jQuery is loaded.
+    if (typeof $ == "undefined") { // if jQuery isn't loaded yet...
+        if (time_elapsed <= 5000) { // and we havn't given up trying...
+            setTimeout(tryReady(time_elapsed+200, callback), 200); // set a timer to check again in 200 ms.
+        }
+    } else {
+        callback();
+    }
+}
+
+loadScript(chrome.extension.getURL('/js/jquery-1.6.2.min.js'), main);*/
+
 $(function() {
     const URL_SEND_MESSAGE = "http://habrahabr.ru/ajax/messages/add/";
     const AUTHOR_CLASS_NAME = '.fn.nickname.url';
@@ -7,6 +31,26 @@ $(function() {
     const THERULES_URL = '<a href="http://therules.ru/';
     const HABRAHABR_URL = 'habrahabr.ru';
     const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
+
+    /*function load_javascript(src, callback) {
+        var a = document.createElement('script');
+        a.type = 'text/javascript';
+        a.src = src;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(a, s);
+
+        // attach it to the script tag
+        window.addEventListener(a, "load", function() {
+            callback();
+        }, false);
+    }
+
+    //load_javascript("https://www.google.com/jsapi", onGoogleLoad);
+    load_javascript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js", onGoogleLoad);
+
+    function onGoogleLoad() {
+        //google.load("jqueryui", "1.7.2");
+    }*/
 
     if (IsCurrentUrlCorrect()) {
         appendStyle();
