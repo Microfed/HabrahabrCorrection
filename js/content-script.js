@@ -1,31 +1,31 @@
 /*function loadScript(url, callback) {
 
-    var script = document.createElement("script")
-    script.type = "text/javascript";
+ var script = document.createElement("script")
+ script.type = "text/javascript";
 
-    script.onload = tryReady(0, callback)
+ script.onload = tryReady(0, callback)
 
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-}
+ script.src = url;
+ document.getElementsByTagName("head")[0].appendChild(script);
+ }
 
-function tryReady(time_elapsed, callback) {
-    // Continually polls to see if jQuery is loaded.
-    if (typeof $ == "undefined") { // if jQuery isn't loaded yet...
-        if (time_elapsed <= 5000) { // and we havn't given up trying...
-            setTimeout(tryReady(time_elapsed+200, callback), 200); // set a timer to check again in 200 ms.
-        }
-    } else {
-        callback();
-    }
-}
+ function tryReady(time_elapsed, callback) {
+ // Continually polls to see if jQuery is loaded.
+ if (typeof $ == "undefined") { // if jQuery isn't loaded yet...
+ if (time_elapsed <= 5000) { // and we havn't given up trying...
+ setTimeout(tryReady(time_elapsed+200, callback), 200); // set a timer to check again in 200 ms.
+ }
+ } else {
+ callback();
+ }
+ }
 
-loadScript(chrome.extension.getURL('/js/jquery-1.6.2.min.js'), main);*/
+ loadScript(chrome.extension.getURL('/js/jquery-1.6.2.min.js'), main);*/
 
 $(function() {
     const URL_SEND_MESSAGE = "http://habrahabr.ru/ajax/messages/add/";
-    const AUTHOR_CLASS_NAME = '.fn.nickname.url';
-    const AUTHOR_CLASS_NAME_MODIFIED = '.fn.nickname.url.karmaloaded';
+    const AUTHOR_CLASS_NAME = '.author';
+    const AUTHOR_CLASS_NAME_MODIFIED = '.author.karmaloaded';
     const TYPE_OF_ERROR_SPELLING = 'Слитное и раздельное написание';
     const TYPE_OF_ERROR_COMMA = 'Запятые';
     const THERULES_URL = '<a href="http://therules.ru/';
@@ -33,24 +33,24 @@ $(function() {
     const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
 
     /*function load_javascript(src, callback) {
-        var a = document.createElement('script');
-        a.type = 'text/javascript';
-        a.src = src;
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(a, s);
+     var a = document.createElement('script');
+     a.type = 'text/javascript';
+     a.src = src;
+     var s = document.getElementsByTagName('script')[0];
+     s.parentNode.insertBefore(a, s);
 
-        // attach it to the script tag
-        window.addEventListener(a, "load", function() {
-            callback();
-        }, false);
-    }
+     // attach it to the script tag
+     window.addEventListener(a, "load", function() {
+     callback();
+     }, false);
+     }
 
-    //load_javascript("https://www.google.com/jsapi", onGoogleLoad);
-    load_javascript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js", onGoogleLoad);
+     //load_javascript("https://www.google.com/jsapi", onGoogleLoad);
+     load_javascript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js", onGoogleLoad);
 
-    function onGoogleLoad() {
-        //google.load("jqueryui", "1.7.2");
-    }*/
+     function onGoogleLoad() {
+     //google.load("jqueryui", "1.7.2");
+     }*/
 
     if (IsCurrentUrlCorrect()) {
         appendStyle();
@@ -97,11 +97,9 @@ $(function() {
     }
 
     function getArticleTitle() {
-        var title = $('.entry-title.single-entry-title span');
-        if (title.text() == '') {
-            title = title.next(); //fix to https://github.com/Microfed/HabrahabrCorrection/issues/1
-        }
-        return title.text();
+        var title = $('.post .title');
+        //удаляем все лишние символы в начале и конце заголовка
+        return title.text().replace(/^\s*|\s*$|[\t\n]/g, '');
     }
 
     /*
@@ -117,10 +115,10 @@ $(function() {
     function getAuthorName() {
         var author;
         if ($(AUTHOR_CLASS_NAME).length) {
-            author = $(AUTHOR_CLASS_NAME + ' span').text()
+            author = $(AUTHOR_CLASS_NAME + ' a').text()
         } else {
             // Некоторые расширения для хабры меняют имя класса
-            author = $(AUTHOR_CLASS_NAME_MODIFIED + ' span').text()
+            author = $(AUTHOR_CLASS_NAME_MODIFIED + ' a').text()
         }
         return author
     }
@@ -210,11 +208,11 @@ $(function() {
     }
 
     function appendDialog() {
-        $('body').append('<div id="dialog" title="Сообщение об ошибке" hidden>' +
-            '<p id="dialog-author-name" style="font-family:verdana,sans-serif;font-size:11px;"></p>' +
-            '<p id="dialog-message-title" style="font-family:verdana,sans-serif;font-size:11px;"><strong>Заголовок:</strong>&nbsp;</p>' +
-            '<p style="font-family:verdana,sans-serif;font-size:11px;"><strong>Текст сообщения:</strong></p>' +
-            '<textarea style="font-family:verdana,sans-serif;font-size:11px;" id="dialog-message-text" cols="65" rows="8" maxlength="1000" required></textarea>' +
+        $('body').append('<div id="habracorrect-dialog" title="Сообщение об ошибке" style="font-family:verdana,sans-serif;font-size:12px;text-align:left" hidden>' +
+            '<p id="dialog-author-name"></p>' +
+            '<p id="dialog-message-title"><b>Заголовок:</b>&nbsp;</p>' +
+            '<p><b>Текст сообщения:</b></p>' +
+            '<textarea id="dialog-message-text" cols="60" rows="8" maxlength="1000" required></textarea>' +
             '<select id="type-of-error">' +
             '<option value="1">Пропущен пробел</option>' +
             '<option value="2">Лишняя запятая</option>' +
@@ -226,11 +224,8 @@ $(function() {
             '<select id="subtype-of-error" style="width : 200px" hidden></select>' +
             '</div>');
 
-        var messageTextarea = $('#dialog-message-text');
-
-        addEventTypeOfError_Change(messageTextarea);
-
-        addEventSubTypeOfError_Change(messageTextarea);
+        addEventTypeOfError_Change();
+        addEventSubTypeOfError_Change();
     }
 
     function addEventTypeOfError_Change() {
@@ -313,8 +308,8 @@ $(function() {
     }
 
     function showDialog(name, title) {
-        $('#dialog').attr('hidden', 'true');
-        $('#dialog').dialog({
+        $('#habracorrect-dialog').attr('hidden', 'true');
+        $('#habracorrect-dialog').dialog({
             width: 500
         }, {
             height: 360
@@ -354,8 +349,8 @@ $(function() {
     function resetDialogFields() {
         $('#dialog-author-name').empty();
         $('#dialog-message-title').empty();
-        $('#dialog-author-name').append("<strong>Кому:</strong>&nbsp;");
-        $('#dialog-message-title').append("<strong>Заголовок:</strong>&nbsp;");
+        $('#dialog-author-name').append("<b>Кому:</b>&nbsp;");
+        $('#dialog-message-title').append("<b>Заголовок:</b>&nbsp;");
         $('#dialog-message-text').empty();
         $('#subtype-of-error').empty();
         $('#subtype-of-error').hide()
