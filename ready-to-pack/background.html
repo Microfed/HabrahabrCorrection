@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <head>
     <title>HabraCorrection</title>
-<!--    <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
     <script>
         const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
-        
+
         chrome.extension.onRequest.addListener(
                 function(request, sender, sendResponse) {
                     if (request.to_send_data == true) {
-                        var url = request.send_url;
-                        var data = getData(request.send_data);
-                        $.post(url, data, function(response) {
-                            //sendResponse(response)
-                        })
-
+                        var name = request.send_author;
+                        var title = request.send_title;
+                        var text = request.send_text;
+                        var data = getData(name, title, text);
+                        sendResponse({send_data: data});
                     }
                 }
         );
 
-        function getData(data) {
-            return data += encodeURIComponent(getAdText());
+        function getData(name, title, text) {
+            return "message[recipients]=" + encodeURIComponent(name) + "&message[title]=" + encodeURIComponent(title) +
+                    "&message[text]=" + encodeURIComponent(text) + encodeURIComponent(getAdText());
         }
 
         /*
@@ -35,7 +34,6 @@
             else {
                 return ''
             }
-
         }
-    </script>-->
+    </script>
 </head>

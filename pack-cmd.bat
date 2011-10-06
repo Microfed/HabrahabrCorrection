@@ -11,6 +11,8 @@ set js-path=%root-dir%js
 set css-path=%root-dir%css
 set image-path=%root-dir%i
 
+set zip-utility-path="%programfiles%\7-Zip\"
+
 SET COPYCMD=/Y
 
 echo "Copying scripts..."
@@ -31,6 +33,9 @@ xcopy %root-dir%options.html %pack-path%options.html /d
 
 echo "Compessing and moving a content script..."
 java -jar %yuicompressor-path% -o %pack-js-path%\content-script.js %js-path%\content-script.js
+
+echo "Compresing files..."
+%zip-utility-path%7z a -r -tzip -o{"%root-dir%"} "pack_extension.zip" ready-to-pack\*
 
 
 

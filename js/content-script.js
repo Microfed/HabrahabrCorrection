@@ -307,6 +307,14 @@ $(function() {
         setMessageText(text);
     }
 
+    function SendRequestToBackgroundPage(name, title, messageText) {
+        chrome.extension.sendRequest({
+                to_send_data: true, send_author: name, send_title: title, send_text: messageText},
+            function(response) {
+                sendDataPost(response.send_data, URL_SEND_MESSAGE);
+            });
+    }
+
     function showDialog(name, title) {
         $('#habracorrect-dialog').attr('hidden', 'true');
         $('#habracorrect-dialog').dialog({
@@ -319,8 +327,8 @@ $(function() {
                     addTextToMessage("\nОпечатка!");
                 },
                 "Отправить": function () {
-                    var data = getData(name, title);
-                    sendDataPost(data, URL_SEND_MESSAGE);
+                    //var data = getData(name, title);
+                    SendRequestToBackgroundPage(name, title, getMessageText())
                     $(this).dialog("close")
                 },
                 "Отменить": function () {
@@ -333,7 +341,7 @@ $(function() {
     }
 
     function getMessageText() {
-        return $('#dialog-message-text').val() + AD_TEXT
+        return $('#dialog-message-text').val();
     }
 
     function addTextToMessage(text) {
