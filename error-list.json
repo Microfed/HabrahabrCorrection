@@ -1,0 +1,103 @@
+{"errorTypes":[
+    {
+        "optionText":"Пропущен пробел",
+        "messageText":"Пропущен пробел"
+    },
+    {
+        "optionText":"Лишняя запятая",
+        "messageText":"Лишняя запятая"
+    },
+    {
+        "optionText":"Тся/ться",
+        "messageText":"<a href='http://tsya.ru'>tsya.ru</a>"
+    },
+    {
+        "optionText":"Запятые",
+        "messageText":"Запятые: ",
+        "errorSubtypes":[
+            {
+                "optionText":"Сложные и придаточные",
+                "messageText":"<a href='http://therules.ru/comma-1/'>сложные и придаточные</a>"
+            },
+            {
+                "optionText":"Главное и придаточное предложения",
+                "messageText":"<a href='http://therules.ru/comma-1/'>главное и придаточное предложения</a>"
+            },
+            {
+                "optionText":"Однородные члены предложения",
+                "messageText":"<a href='http://therules.ru/comma-1/'>однородные члены предложения</a>"
+            },
+            {
+                "optionText":"Повторяющиеся слова",
+                "messageText":"<a href='http://therules.ru/comma-1/'>повторяющиеся слова</a>"
+            },
+            {
+                "optionText":"Cравнительные обороты",
+                "messageText":"<a href='http://therules.ru/comma-1/'>сравнительные обороты</a>"
+            },
+            {
+                "optionText":"Определительные обороты",
+                "messageText":"<a href='http://therules.ru/comma-1/'>определительные обороты</a>"
+            },
+            {
+                "optionText":"Обстоятельственные обороты",
+                "messageText":"<a href='http://therules.ru/comma-1/'>обстоятельственные обороты</a>"
+            },
+            {
+                "optionText":"Уточняющие слова",
+                "messageText":"<a href='http://therules.ru/comma-1/'>уточняющие слова</a>"
+            },
+            {
+                "optionText":"Вводные слова",
+                "messageText":"<a href='http://therules.ru/comma-1/'>вводные слова</a>"
+            },
+            {
+                "optionText":"Обращения",
+                "messageText":"<a href='http://therules.ru/comma-1/'>обращения</a>"
+            },
+            {
+                "optionText":"Междометия",
+                "messageText":"<a href='http://therules.ru/comma-1/'>междометия</a>"
+            },
+            {
+                "optionText":"Утвердительные, отрицательные и вопросительные слова",
+                "messageText":"<a href='http://therules.ru/comma-1/'>утвердительные, отрицательные и вопросительные слова</a>"
+            }
+        ]
+    },
+    {
+        "optionText":"Различное написание (слитное/дефис)",
+        "messageText":"Различное написание (слитное/дефис): ",
+        "errorSubtypes":[
+            {
+                "optionText":"Общие правила",
+                "messageText":"<a href='http://therules.ru/hyphen/'>общие правила</a>"
+            },
+            {
+                "optionText":"Существительные",
+                "messageText":"<a href='http://therules.ru/hyphen-nouns/'>существительные</a>"
+            },
+            {
+                "optionText":"Прилагательные",
+                "messageText":"<a href='http://therules.ru/hyphen-adjectives/'>прилагательные</a>"
+            },
+            {
+                "optionText":"Числительные",
+                "messageText":"<a href='http://therules.ru/hyphen-numerals/'>числительные</a>"
+            },
+            {
+                "optionText":"Наречия",
+                "messageText":"<a href='http://therules.ru/hyphen-adverbs/'>наречия</a>"
+            },
+            {
+                "optionText":"Предлоги, союзы, частицы, междометия",
+                "messageText":"<a href='http://therules.ru/hyphen-prepositions/'>предлоги, союзы, частицы, междометия</a>"
+            },
+            {
+                "optionText":"Правописание не и ни",
+                "messageText":"<a href='http://therules.ru/hyphen-particles/'>правописание не и ни</a>"
+            }
+        ]
+    }
+]
+}

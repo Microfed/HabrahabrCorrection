@@ -288,6 +288,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-addTypeOfErrorOptions">addTypeOfErrorOptions</a></b>(typeOfErrorSelect)
+								</div>
+								<div class="description">Добавляет к заданному контролу для перечисления ошибокoption для каждого типа ошибки.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-alertWhenFail">alertWhenFail</a></b>(response)
 								</div>
 								<div class="description">Проверяет ответ севера.</div>
@@ -300,6 +309,15 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-appendDialog">appendDialog</a></b>()
 								</div>
 								<div class="description">Добавляет слой с диалоговым окном к элементу body текущей страницы.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-appendErrorSubTypesList">appendErrorSubTypesList</a></b>(errorType, subtypeOfErrorSelect)
+								</div>
+								<div class="description">Добавляет элементы option, которые соответствуютподтипам определенной ошибки, к заданному select</div>
 							</td>
 						</tr>
 					
@@ -333,15 +351,6 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getCommasList">getCommasList</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getContentText">getContentText</a></b>(articleUrl)
 								</div>
 								<div class="description">Возвращает выделенный текст, как цитату.</div>
@@ -351,7 +360,16 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;inner&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getErrorSubType">getErrorSubType</a></b>(errorSubType)
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getErrorMessageText">getErrorMessageText</a></b>(errorType)
+								</div>
+								<div class="description">Возвращает информацию для сообщения, соответсвующую типу ошибки.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getErrorSubType">getErrorSubType</a></b>()
 								</div>
 								<div class="description">Возвращает тему в разделе правил.</div>
 							</td>
@@ -363,15 +381,6 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getErrorType">getErrorType</a></b>()
 								</div>
 								<div class="description">Возвращает тип ошибки (раздел правил), который был выбран пользователем.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;inner&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-getListOfSpellings">getListOfSpellings</a></b>()
-								</div>
-								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -399,6 +408,24 @@ ul.inheritsList
 								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-isCurrentUrlCorrect">isCurrentUrlCorrect</a></b>()
 								</div>
 								<div class="description">Проверяет, подходит ли текущая страница для работы скрипта.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-isErrorHasSubTypes">isErrorHasSubTypes</a></b>(errorType)
+								</div>
+								<div class="description">Есть ли у типа ошибки её подтипы.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;inner&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ContentScript.html#-loadErrorList">loadErrorList</a></b>()
+								</div>
+								<div class="description">Загружает список ошибок из JSON-файла.</div>
 							</td>
 						</tr>
 					
@@ -617,6 +644,42 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="-addTypeOfErrorOptions"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>addTypeOfErrorOptions</b>(typeOfErrorSelect)
+					
+					</div>
+					<div class="description">
+						Добавляет к заданному контролу для перечисления ошибокoption для каждого типа ошибки.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{jQuery object}</span> <b>typeOfErrorSelect</b>
+									
+								</dt>
+								<dd>Select для типов ошибок</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="-alertWhenFail"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -668,6 +731,48 @@ ul.inheritsList
 					
 					
 					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="-appendErrorSubTypesList"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>appendErrorSubTypesList</b>(errorType, subtypeOfErrorSelect)
+					
+					</div>
+					<div class="description">
+						Добавляет элементы option, которые соответствуютподтипам определенной ошибки, к заданному select
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>errorType</b>
+									
+								</dt>
+								<dd>Тип ошибки</dd>
+							
+								<dt>
+									<span class="light fixedFont">{jQuery object}</span> <b>subtypeOfErrorSelect</b>
+									
+								</dt>
+								<dd>Select для подтипов ошибок</dd>
+							
+							</dl>
 						
 						
 						
@@ -767,31 +872,6 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="-getCommasList"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>getCommasList</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="-getContentText"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
@@ -835,15 +915,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name="-getErrorSubType"> </a>
+					<a name="-getErrorMessageText"> </a>
 					<div class="fixedFont">&lt;inner&gt; 
 					
 					<span class="light">{string}</span>
-					<b>getErrorSubType</b>(errorSubType)
+					<b>getErrorMessageText</b>(errorType)
 					
 					</div>
 					<div class="description">
-						Возвращает тему в разделе правил.
+						Возвращает информацию для сообщения, соответсвующую типу ошибки.
 						
 						
 					</div>
@@ -855,10 +935,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>errorSubType</b>
+									<span class="light fixedFont">{string}</span> <b>errorType</b>
 									
 								</dt>
-								<dd>Значение, определяющие раздел правил.</dd>
+								<dd>Тип ошибки</dd>
 							
 							</dl>
 						
@@ -869,7 +949,39 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{string}</span> часть ссылки на правило, соответсвующее выбранной теме.</dd>
+								<dd><span class="light fixedFont">{string}</span> Текст сообщения об ошибке</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-getErrorSubType"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{string}</span>
+					<b>getErrorSubType</b>()
+					
+					</div>
+					<div class="description">
+						Возвращает тему в разделе правил.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> текст подтипа ошибки.</dd>
 							
 							</dl>
 						
@@ -901,34 +1013,9 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{string}</span> Значение аттрибута value в ввиде строки.</dd>
+								<dd><span class="light fixedFont">{string}</span> Значение text тега option в ввиде строки.</dd>
 							
 							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="-getListOfSpellings"> </a>
-					<div class="fixedFont">&lt;inner&gt; 
-					
-					
-					<b>getListOfSpellings</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
 						
 						
 						
@@ -1025,6 +1112,74 @@ ul.inheritsList
 								<dd><span class="light fixedFont">{boolean}</span> Возвращает true, если текущая страница - это страница на хабрес комментами (это означает, что открыта страница статьи).</dd>
 							
 							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-isErrorHasSubTypes"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					<span class="light">{boolean}</span>
+					<b>isErrorHasSubTypes</b>(errorType)
+					
+					</div>
+					<div class="description">
+						Есть ли у типа ошибки её подтипы.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>errorType</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> true, если у типа есть подтип, иначе false</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="-loadErrorList"> </a>
+					<div class="fixedFont">&lt;inner&gt; 
+					
+					
+					<b>loadErrorList</b>()
+					
+					</div>
+					<div class="description">
+						Загружает список ошибок из JSON-файла. После загрузки добавляет диалоговое окнов DOM страницы.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
 						
 						
 						
@@ -1381,7 +1536,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Oct 10 2011 21:07:20 GMT+0400 (MSD)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Oct 11 2011 00:59:22 GMT+0400 (MSD)
 		</div>
 	</body>
 </html>

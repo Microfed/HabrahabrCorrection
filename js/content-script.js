@@ -5,9 +5,9 @@
  */
 
 /**
-    @namespace Содержит весь функционал контент-скрипта.
-    @name ContentScript
-*/
+ @namespace Содержит весь функционал контент-скрипта.
+ @name ContentScript
+ */
 $(function () {
     'use strict';
     /**@lends ContentScript*/
@@ -15,11 +15,10 @@ $(function () {
     var URL_SEND_MESSAGE = "http://habrahabr.ru/ajax/messages/add/",
         AUTHOR_CLASS_NAME = '.author',
         AUTHOR_CLASS_NAME_MODIFIED = '.author.karmaloaded',
-        TYPE_OF_ERROR_SPELLING = 'Слитное и раздельное написание',
-        TYPE_OF_ERROR_COMMA = 'Запятые',
-        THERULES_URL = '<a href="http://therules.ru/',
         HABRAHABR_URL = 'habrahabr.ru',
         DIALOG_STYLE = "font-family:verdana,sans-serif;font-size:12px;text-align:left";
+
+    var error_dict;
 
     /**
      * Проверяет, подходит ли текущая страница для работы скрипта.
@@ -55,76 +54,19 @@ $(function () {
     /**
      * Возвращает тип ошибки (раздел правил), который был выбран пользователем.
      *
-     * @return {string} Значение аттрибута value в ввиде строки.
+     * @return {string} Значение text тега option в ввиде строки.
      */
     function getErrorType() {
-        return $('#type-of-error option:selected').val();
-    }
-
-    /**
-     * @function
-     */
-    function getCommasList() {
-        return $(
-            '<option value="4_1">Сложные и придаточные</option>' +
-                '<option value="4_2">Главное и придаточное предложения</option>' +
-                '<option value="4_3">Однородные члены предложения</option>' +
-                '<option value="4_4">Повторяющиеся слова</option>' +
-                '<option value="4_5">Cравнительные обороты</option>' +
-                '<option value="4_6">Определительные обороты</option>' +
-                '<option value="4_7">Обстоятельственные обороты</option>' +
-                '<option value="4_8">Уточняющие слова</option>' +
-                '<option value="4_9">Вводные слова</option>' +
-                '<option value="4_10">Обращения</option>' +
-                '<option value="4_11">Междометия</option>' +
-                '<option value="4_12">Утвердительные, отрицательные и вопросительные слова</option>'
-        );
-    }
-
-    /**
-     * @function
-     */
-    function getListOfSpellings() {
-        return $(
-            '<option value="5_1">Общие правила</option>' +
-                '<option value="5_2">Существительные</option>' +
-                '<option value="5_3">Прилагательные</option>' +
-                '<option value="5_4">Числительные</option>' +
-                '<option value="5_5">Наречия</option>' +
-                '<option value="5_6">Предлоги, союзы, частицы, междометия</option>' +
-                '<option value="5_7">Правописание не и ни</option>'
-        );
+        return $('#type-of-error option:selected').text();
     }
 
     /**
      * Возвращает тему в разделе правил.
      *
-     * @param errorSubType Значение, определяющие раздел правил.
-     * @return {string} часть ссылки на правило, соответсвующее выбранной теме.
+     * @return {string} текст подтипа ошибки.
      */
-    function getErrorSubType(errorSubType) {
-        var topic = '';
-        switch (errorSubType) {
-        case "5_2":
-            topic = '-nouns';
-            break;
-        case "5_3":
-            topic = '-adjectives';
-            break;
-        case "5_4":
-            topic = '-numerals';
-            break;
-        case "5_5":
-            topic = '-adverbs';
-            break;
-        case "5_6":
-            topic = '-prepositions';
-            break;
-        case "5_7":
-            topic = '-particles';
-            break;
-        }
-        return topic;
+    function getErrorSubType() {
+        return $('#subtype-of-error option:selected').text();
     }
 
     /**
@@ -139,6 +81,68 @@ $(function () {
 
 
     /**
+     * Возвращает информацию для сообщения, соответсвующую типу ошибки.
+     *
+     * @param {string} errorType Тип ошибки
+     * @return {string} Текст сообщения об ошибке
+     */
+    function getErrorMessageText(errorType) {
+        var errorMessageText;
+
+        $.each(error_dict.errorTypes, function() {
+            if (this.optionText === errorType) {
+                errorMessageText = this.messageText;
+                return false;
+            }
+            if (isErrorHasSubTypes(this.optionText)) {
+                $.each(this.errorSubtypes, function() {
+                    if (this.optionText === errorType) {
+                        errorMessageText = this.messageText;
+                        return false;
+                    }
+                });
+            }
+        });
+        return errorMessageText;
+    }
+
+    /**
+     * Есть ли у типа ошибки её подтипы.
+     *
+     * @param {string} errorType
+     * @return {boolean} true, если у типа есть подтип, иначе false
+     */
+    function isErrorHasSubTypes(errorType) {
+        var hasSubTypes = false;
+
+        $.each(error_dict.errorTypes, function() {
+            if (this.optionText === errorType && this.errorSubtypes !== undefined) {
+                hasSubTypes = true;
+                return false;
+            }
+        });
+
+        return hasSubTypes;
+    }
+
+    /**
+     * Добавляет элементы option, которые соответствуют
+     * подтипам определенной ошибки, к заданному select
+     *
+     * @param {string} errorType Тип ошибки
+     * @param {jQuery object} subtypeOfErrorSelect Select для подтипов ошибок
+     */
+    function appendErrorSubTypesList(errorType, subtypeOfErrorSelect) {
+        $.each(error_dict.errorTypes, function() {
+            if (this.optionText === errorType) {
+                $.each(this.errorSubtypes, function() {
+                    subtypeOfErrorSelect.append(new Option(this.optionText, 0));
+                });
+            }
+        });
+    }
+
+    /**
      * Добавляет событие onChange для элемента c id='type-of-error' диалогового окна.
      * При срабатывании события проверяется выделенный элемент. Дальнейшие действия
      * зависят от его содержания.
@@ -147,31 +151,13 @@ $(function () {
         $('#type-of-error').change(function () {
             var errorType = getErrorType(),
                 subtypeOfErrorSelect = $('#subtype-of-error'),
-                listToAppend = '',
                 messageToAppend = '\n';
 
             subtypeOfErrorSelect.empty();
+            messageToAppend += getErrorMessageText(errorType);
 
-            switch (errorType) {
-            case "1":
-                messageToAppend += 'Пропущен пробел.';
-                break;
-            case "2":
-                messageToAppend += 'Лишняя запятая.';
-                break;
-            case "3":
-                messageToAppend += '<a href="http://tsya.ru">tsya.ru</a>';
-                break;
-            case "4":
-                listToAppend = getCommasList();
-                break;
-            case "5":
-                listToAppend = getListOfSpellings();
-                break;
-            }
-
-            if (listToAppend.length > 1) {
-                subtypeOfErrorSelect.append(listToAppend);
+            if (isErrorHasSubTypes(errorType)) {
+                appendErrorSubTypesList(errorType, subtypeOfErrorSelect);
                 subtypeOfErrorSelect.show();
             }
 
@@ -186,19 +172,26 @@ $(function () {
      */
     function addEventSubTypeOfError_Change() {
         $('#subtype-of-error').change(function () {
-            var messageToAppend = '\n',
-                topic = '',
-                errorSubType = $('#subtype-of-error').val();
+            var messageToAppend = '',
+                errorSubType = getErrorSubType();
 
-            if (errorSubType[0] === '4') {
-                messageToAppend += THERULES_URL + 'comma-' + errorSubType.substr(2) + '/">' + TYPE_OF_ERROR_COMMA + '</a>';
-            } else {
-                topic = getErrorSubType(errorSubType);
-                messageToAppend += THERULES_URL + 'hyphen' + topic + '/">' + TYPE_OF_ERROR_SPELLING + '</a>';
-            }
-
+            messageToAppend += getErrorMessageText(errorSubType);
             addTextToMessage(messageToAppend);
         });
+    }
+
+    /**
+     * Добавляет к заданному контролу для перечисления ошибок
+     * option для каждого типа ошибки.
+     *
+     * @param {jQuery object} typeOfErrorSelect Select для типов ошибок
+     */
+    function addTypeOfErrorOptions(typeOfErrorSelect) {
+        if (error_dict.errorTypes) {
+            $.each(error_dict.errorTypes, function() {
+                    typeOfErrorSelect.append(new Option(this.optionText, 0));
+            });
+        }
     }
 
     /**
@@ -212,23 +205,31 @@ $(function () {
             '<p><b>Текст сообщения:</b></p>' +
             '<textarea id="dialog-message-text" cols="60" rows="8" maxlength="1000" required></textarea>' +
             '<select id="type-of-error">' +
-            '<option value="1">Пропущен пробел</option>' +
-            '<option value="2">Лишняя запятая</option>' +
-            '<option value="3">Тся/ться</option>' +
-            '<option value="4">Запятые</option>' +
-            '<option value="5">Различное написание (слитное/дефис)</option>' +
             '</select>' +
             '</br>' +
             '<select id="subtype-of-error" style="width : 200px" hidden></select>' +
             '</div>');
 
+        var typeOfErrorSelect = $('#type-of-error');
+        addTypeOfErrorOptions(typeOfErrorSelect);
         addEventTypeOfError_Change();
         addEventSubTypeOfError_Change();
     }
 
+    /**
+     * Загружает список ошибок из JSON-файла. После загрузки добавляет диалоговое окно
+     * в DOM страницы.
+     */
+    function loadErrorList() {
+        $.getJSON(chrome.extension.getURL('/error-list.json'), function(data) {
+            error_dict = data;
+            appendDialog();
+        });
+    }
+
     if (isCurrentUrlCorrect()) {
         appendStyle();
-        appendDialog();
+        loadErrorList();
     }
 
     /**
