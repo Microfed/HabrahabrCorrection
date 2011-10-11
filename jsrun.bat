@@ -5,7 +5,7 @@ set BASEDIR=%JSDOCDIR%
 set TDIR=%JSDOCTEMPLATEDIR%
 set DOCSDIR=%CD%\docs
 
-set CMD=java -Djsdoc.dir=%DOCDIR% -Djsdoc.template.dir=%TDIR% -jar %BASEDIR%\jsrun.jar %APPDIR%\run.js -d=%DOCSDIR% %1
+set CMD=java -Djsdoc.dir=%DOCDIR% -Djsdoc.template.dir=%TDIR% -jar %BASEDIR%\jsrun.jar %APPDIR%\run.js -d=%DOCSDIR% %*
 echo Writing a documentation...
 echo Output dir: %DOCSDIR%
 %CMD%

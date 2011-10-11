@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - _global_</title>
+		<title>JsDoc Reference - ErrorListManager</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -210,7 +210,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Built-In Namespace _global_
+				Class ErrorListManager
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -218,24 +218,50 @@ ul.inheritsList
 				
 				
 			
+				Отвечает за работу со списком ошибок.
 				
 				
+					<br /><i>Defined in: </i> <a href="../symbols/src/js_ErrorListManager.js.html">ErrorListManager.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class ErrorListManager.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/ErrorListManager.html#constructor">ErrorListManager</a></b>(errorDict)
+							</div>
+							<div class="description"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
 
 <!-- ============================== properties summary ===================== -->
 			
+
+<!-- ============================== methods summary ======================== -->
+			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class _global_.">
-					<caption>Field Summary</caption>
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class ErrorListManager.">
+					<caption>Method Summary</caption>
 					<thead>
 						<tr>
-							<th scope="col">Field Attributes</th>
-							<th scope="col">Field Name and Description</th>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -243,10 +269,18 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/_global_.html#URL_SEND_MESSAGE">URL_SEND_MESSAGE</a></b>
+								<div class="fixedFont"><b><a href="../symbols/ErrorListManager.html#getErrorMessageText">getErrorMessageText</a></b>(errorType)
 								</div>
-								<div class="description">Адресс скрипта отправки личных сообщений.</div>
+								<div class="description">Возвращает информацию для сообщения, соответсвующую типу ошибки.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/ErrorListManager.html#isErrorHasSubTypes">isErrorHasSubTypes</a></b>(errorType)
+								</div>
+								<div class="description">Есть ли у типа ошибки её подтипы.</div>
 							</td>
 						</tr>
 					
@@ -256,49 +290,145 @@ ul.inheritsList
 				
 				
 			
-
-<!-- ============================== methods summary ======================== -->
-			
 <!-- ============================== events summary ======================== -->
 			
 
 <!-- ============================== constructor details ==================== -->		
 			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>ErrorListManager</b>(errorDict)
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{object}</span>  <b>errorDict</b>
+								
+							</dt>
+								<dd>JSON-представление списка ошибок</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
 
 <!-- ============================== field details ========================== -->		
 			
+
+<!-- ============================== method details ========================= -->		
+			
 				<div class="sectionTitle">
-					Field Detail
+					Method Detail
 				</div>
 				
-					<a name="URL_SEND_MESSAGE"> </a>
+					<a name="getErrorMessageText"> </a>
 					<div class="fixedFont">
 					
-					
-					<b>URL_SEND_MESSAGE</b>
+					<span class="light">{string}</span>
+					<b>getErrorMessageText</b>(errorType)
 					
 					</div>
 					<div class="description">
-						Адресс скрипта отправки личных сообщений.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/js_HabraCorrector.js.html">HabraCorrector.js</a>.
+						Возвращает информацию для сообщения, соответсвующую типу ошибки.
 						
 						
 					</div>
 					
 					
-
+					
 						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>errorType</b>
+									
+								</dt>
+								<dd>Тип ошибки</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> Текст сообщения об ошибке</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isErrorHasSubTypes"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isErrorHasSubTypes</b>(errorType)
+					
+					</div>
+					<div class="description">
+						Есть ли у типа ошибки её подтипы.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>errorType</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> true, если у типа есть подтип, иначе false</dd>
+							
+							</dl>
 						
 						
 						
 
 					
 				
-			
-
-<!-- ============================== method details ========================= -->		
 			
 			
 <!-- ============================== event details ========================= -->		
