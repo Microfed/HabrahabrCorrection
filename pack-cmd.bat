@@ -27,12 +27,19 @@ xcopy %image-path% %pack-image-path% /i /d /s
 echo "Copying manifest..."
 xcopy %root-dir%manifest.json %pack-path%manifest.json /d
 
+echo "Copying error list..."
+xcopy %root-dir%error-list.json %pack-path%error-list.json /d
+
 echo "Copying html-pages..."
 xcopy %root-dir%background.html %pack-path%background.html /d
 xcopy %root-dir%options.html %pack-path%options.html /d
 
 echo "Compessing and moving a content script..."
 java -jar %yuicompressor-path% -o %pack-js-path%\content-script.js %js-path%\content-script.js
+java -jar %yuicompressor-path% -o %pack-js-path%\DialogBox.js %js-path%\DialogBox.js
+java -jar %yuicompressor-path% -o %pack-js-path%\ErrorListManager.js %js-path%\ErrorListManager.js
+java -jar %yuicompressor-path% -o %pack-js-path%\HabraCorrector.js %js-path%\HabraCorrector.js
+java -jar %yuicompressor-path% -o %pack-js-path%\HabraPage.js %js-path%\HabraPage.js
 
 echo "Compresing files..."
 %zip-utility-path%7z a -r -tzip -o{"%root-dir%"} "pack_extension.zip" ready-to-pack\*

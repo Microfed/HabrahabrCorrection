@@ -1,6 +1,6 @@
 {
     "name": "HabraCorrection",
-    "version": "0.2.0",
+    "version": "0.3.2",
     "description": "Помогает сообщать авторам статей на Хабрахабре об их ошибках.",
     "icons": {
         "128": "/i/icon-128.png",
@@ -10,7 +10,13 @@
     "content_scripts": [
         {
             "matches": ["http://habrahabr.ru/*"],
-            "js": ["/js/jquery-1.6.2.min.js", "/js/jquery-ui-1.8.16.custom.min.js", "/js/content-script.js"]
+            "js": ["/js/jquery-1.6.2.min.js",
+                "/js/jquery-ui-1.8.16.custom.min.js",
+                "/js/DialogBox.js",
+                "/js/ErrorListManager.js",
+                "/js/HabraPage.js",
+                "/js/HabraCorrector.js",
+                "/js/content-script.js"]
 
         }
     ],
