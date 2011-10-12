@@ -24,14 +24,14 @@ ErrorListManager.prototype.getErrorMessageText = function (errorType) {
     var errorMessageText;
     var errorListManager = this;
 
-    $.each(errorListManager.errorDict.errorTypes, function() {
-        if (this.optionText === errorType) {
+    $.each(errorListManager.errorDict, function() {
+        if (this.title === errorType) {
             errorMessageText = this.messageText;
             return false;
         }
-        if (errorListManager.isErrorHasSubTypes(this.optionText)) {
-            $.each(this.errorSubtypes, function() {
-                if (this.optionText === errorType) {
+        if (errorListManager.isErrorHasSubTypes(this.title)) {
+            $.each(this.children, function() {
+                if (this.title === errorType) {
                     errorMessageText = this.messageText;
                     return false;
                 }
@@ -52,8 +52,8 @@ ErrorListManager.prototype.isErrorHasSubTypes = function (errorType) {
     var hasSubTypes = false;
     var errorListManager = this;
 
-    $.each(errorListManager.errorDict.errorTypes, function() {
-        if (this.optionText === errorType && this.errorSubtypes !== undefined) {
+    $.each(errorListManager.errorDict, function() {
+        if (this.title === errorType && this.children !== undefined) {
             hasSubTypes = true;
             return false;
         }

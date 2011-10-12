@@ -28,7 +28,7 @@ echo "Copying manifest..."
 xcopy %root-dir%manifest.json %pack-path%manifest.json /d
 
 echo "Copying error list..."
-xcopy %root-dir%error-list.json %pack-path%error-list.json /d
+xcopy %root-dir%errorList.json %pack-path%errorList.json /d
 
 echo "Copying html-pages..."
 xcopy %root-dir%background.html %pack-path%background.html /d

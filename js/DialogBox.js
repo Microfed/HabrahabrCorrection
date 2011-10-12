@@ -50,7 +50,8 @@ DialogBox.prototype.getErrorType = function() {
  */
 DialogBox.prototype.addEventTypeOfError_Change = function () {
     var dialogBox = this;
-    $('#type-of-error').change(function () {
+
+    var _EventHandler = function () {
         var errorType = dialogBox.getErrorType(),
             subtypeOfErrorSelect = $('#subtype-of-error'),
             messageToAppend = '\n';
@@ -63,7 +64,10 @@ DialogBox.prototype.addEventTypeOfError_Change = function () {
         }
 
         dialogBox.addTextToMessage(messageToAppend);
-    });
+    }
+
+    $('#type-of-error').change(_EventHandler);
+    $('#type-of-error').dblclick(_EventHandler);
 };
 
 /**
@@ -73,13 +77,17 @@ DialogBox.prototype.addEventTypeOfError_Change = function () {
  */
 DialogBox.prototype.addEventSubTypeOfError_Change = function () {
     var dialogBox = this;
-    $('#subtype-of-error').change(function () {
+
+    var _EventHandler = function () {
         var messageToAppend = '',
             errorSubType = dialogBox.getErrorSubType();
 
         messageToAppend += dialogBox.ErrorListManager.getErrorMessageText(errorSubType);
         dialogBox.addTextToMessage(messageToAppend);
-    });
+    }
+
+    $('#subtype-of-error').change(_EventHandler);
+    $('#subtype-of-error').dblclick(_EventHandler);
 };
 
 /**
@@ -172,15 +180,15 @@ DialogBox.prototype.getMessageText = function () {
  * option для каждого типа ошибки.
  */
 DialogBox.prototype.addTypeOfErrorOptions = function () {
-    var dialogBox= this;
+    var dialogBox = this;
     var getTypeOfErrorSelect = function () {
         return $('#type-of-error');
     };
 
     var typeOfErrorSelect = getTypeOfErrorSelect();
-    if (dialogBox.ErrorListManager.errorDict.errorTypes) {
-        $.each(dialogBox.ErrorListManager.errorDict.errorTypes, function() {
-            typeOfErrorSelect.append(new Option(this.optionText, 0));
+    if (dialogBox.ErrorListManager.errorDict) {
+        $.each(dialogBox.ErrorListManager.errorDict, function() {
+            typeOfErrorSelect.append(new Option(this.title, 0));
         });
     }
 };
@@ -194,10 +202,10 @@ DialogBox.prototype.addTypeOfErrorOptions = function () {
  */
 DialogBox.prototype.appendErrorSubTypesList = function (errorType, subtypeOfErrorSelect) {
     var dialogBox = this;
-    $.each(dialogBox.ErrorListManager.errorDict.errorTypes, function() {
-        if (this.optionText === errorType) {
-            $.each(this.errorSubtypes, function() {
-                subtypeOfErrorSelect.append(new Option(this.optionText, 0));
+    $.each(dialogBox.ErrorListManager.errorDict, function() {
+        if (this.title === errorType) {
+            $.each(this.children, function() {
+                subtypeOfErrorSelect.append(new Option(this.title, 0));
             });
         }
     });

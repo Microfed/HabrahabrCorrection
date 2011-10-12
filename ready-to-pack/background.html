@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <title>HabraCorrection</title>
+    <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
     <script>
         const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
 
@@ -12,6 +13,10 @@
                         var text = request.send_text;
                         var data = getData(name, title, text);
                         sendResponse({send_data: data});
+                    }
+                    if (request.get_errorList) {
+                        var errorList = JSON.parse(localStorage['errorList']);
+                        sendResponse({data: errorList});
                     }
                 }
         );

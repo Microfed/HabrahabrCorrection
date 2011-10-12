@@ -25,12 +25,14 @@ var HabraCorrector = function() {
  */
 HabraCorrector.prototype.loadErrorListAndAppendDialogBox = function() {
     var habraCorrector = this;
-    $.getJSON(chrome.extension.getURL('/error-list.json'), function(data) {
-        habraCorrector.errorListManager = new ErrorListManager(data);
-        habraCorrector.dialogBox = new DialogBox(habraCorrector.errorListManager);
-        habraCorrector.dialogBox.appendStyle();
-        habraCorrector.dialogBox.appendDialog();
-    });
+
+    chrome.extension.sendRequest({get_errorList: true},
+        function (response) {
+            habraCorrector.errorListManager = new ErrorListManager(response.data);
+            habraCorrector.dialogBox = new DialogBox(habraCorrector.errorListManager);
+            habraCorrector.dialogBox.appendStyle();
+            habraCorrector.dialogBox.appendDialog();
+        });
 };
 
 /**

@@ -1,0 +1,106 @@
+[
+    {
+        "title": "Пропущен пробел",
+        "messageText": "Пропущен пробел"
+    },
+    {
+        "title": "Лишняя запятая",
+        "messageText": "Лишняя запятая"
+    },
+    {
+        "title": "Тся/ться",
+        "messageText": "<a href='http://tsya.ru'>tsya.ru</a>"
+    },
+    {
+        "title": "Запятые",
+        "messageText": "Запятые: ",
+        "isFolder": true,
+        "key": "Запятые",
+        "children": [
+            {
+                "title": "Сложные и придаточные",
+                "messageText": "<a href='http://therules.ru/comma-1/'>сложные и придаточные</a>"
+            },
+            {
+                "title": "Главное и придаточное предложения",
+                "messageText": "<a href='http://therules.ru/comma-2/'>главное и придаточное предложения</a>"
+            },
+            {
+                "title": "Однородные члены предложения",
+                "messageText": "<a href='http://therules.ru/comma-3/'>однородные члены предложения</a>"
+            },
+            {
+                "title": "Повторяющиеся слова",
+                "messageText": "<a href='http://therules.ru/comma-4/'>повторяющиеся слова</a>"
+            },
+            {
+                "title": "Cравнительные обороты",
+                "messageText": "<a href='http://therules.ru/comma-5/'>сравнительные обороты</a>"
+            },
+            {
+                "title": "Определительные обороты",
+                "messageText": "<a href='http://therules.ru/comma-6/'>определительные обороты</a>"
+            },
+            {
+                "title": "Обстоятельственные обороты",
+                "messageText": "<a href='http://therules.ru/comma-7/'>обстоятельственные обороты</a>"
+            },
+            {
+                "title": "Уточняющие слова",
+                "messageText": "<a href='http://therules.ru/comma-8/'>уточняющие слова</a>"
+            },
+            {
+                "title": "Вводные слова",
+                "messageText": "<a href='http://therules.ru/comma-9/'>вводные слова</a>"
+            },
+            {
+                "title": "Обращения",
+                "messageText": "<a href='http://therules.ru/comma-10/'>обращения</a>"
+            },
+            {
+                "title": "Междометия",
+                "messageText": "<a href='http://therules.ru/comma-11/'>междометия</a>"
+            },
+            {
+                "title": "Утвердительные, отрицательные и вопросительные слова",
+                "messageText": "<a href='http://therules.ru/comma-12/'>утвердительные, отрицательные и вопросительные слова</a>"
+            }
+        ]
+    },
+    {
+        "title":"Различное написание (слитное/дефис)",
+        "messageText":"Различное написание (слитное/дефис): ",
+        "isFolder": true,
+        "key": "Различное написание (слитное/дефис)",
+        "children":[
+            {
+                "title":"Общие правила",
+                "messageText":"<a href='http://therules.ru/hyphen/'>общие правила</a>"
+            },
+            {
+                "title":"Существительные",
+                "messageText":"<a href='http://therules.ru/hyphen-nouns/'>существительные</a>"
+            },
+            {
+                "title":"Прилагательные",
+                "messageText":"<a href='http://therules.ru/hyphen-adjectives/'>прилагательные</a>"
+            },
+            {
+                "title":"Числительные",
+                "messageText":"<a href='http://therules.ru/hyphen-numerals/'>числительные</a>"
+            },
+            {
+                "title":"Наречия",
+                "messageText":"<a href='http://therules.ru/hyphen-adverbs/'>наречия</a>"
+            },
+            {
+                "title":"Предлоги, союзы, частицы, междометия",
+                "messageText":"<a href='http://therules.ru/hyphen-prepositions/'>предлоги, союзы, частицы, междометия</a>"
+            },
+            {
+                "title":"Правописание не и ни",
+                "messageText":"<a href='http://therules.ru/hyphen-particles/'>правописание не и ни</a>"
+            }
+        ]
+    }
+]
