@@ -1,6 +1,6 @@
 {
     "name": "HabraCorrection",
-    "version": "0.4.1",
+    "version": "0.4.3",
     "description": "Помогает сообщать авторам статей на Хабрахабре об их ошибках.",
     "icons": {
         "128": "/i/icon-128.png",

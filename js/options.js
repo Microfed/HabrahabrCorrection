@@ -93,7 +93,8 @@ var acceptChangeActiveElement = function () {
     var node = getTreeDiv().dynatree("getActiveNode"),
         title = $('#activeTreeElement #title').val(),
         messageText = $('#activeTreeElement #messageText').val(),
-        isFolder = $('#activeTreeElement #isFolder').val();
+        isFolder = $('input#isFolder').attr('checked') ? true : false;
+    console.log(isFolder);
     if (!node) {
         return;
     }
