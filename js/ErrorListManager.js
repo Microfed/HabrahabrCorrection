@@ -10,7 +10,8 @@
  * @name ErrorListManager
  * @param {object} errorDict JSON-представление списка ошибок
  */
-var ErrorListManager = function(errorDict) {
+var ErrorListManager = function (errorDict) {
+    'use strict';
     this.errorDict = errorDict;
 };
 
@@ -21,16 +22,17 @@ var ErrorListManager = function(errorDict) {
  * @return {string} Текст сообщения об ошибке
  */
 ErrorListManager.prototype.getErrorMessageText = function (errorType) {
-    var errorMessageText;
-    var errorListManager = this;
+    'use strict';
+    var errorMessageText,
+        errorListManager = this;
 
-    $.each(errorListManager.errorDict, function() {
+    $.each(errorListManager.errorDict, function () {
         if (this.title === errorType) {
             errorMessageText = this.messageText;
             return false;
         }
         if (errorListManager.isErrorHasSubTypes(this.title)) {
-            $.each(this.children, function() {
+            $.each(this.children, function () {
                 if (this.title === errorType) {
                     errorMessageText = this.messageText;
                     return false;
@@ -49,10 +51,11 @@ ErrorListManager.prototype.getErrorMessageText = function (errorType) {
  * @return {boolean} true, если у типа есть подтип, иначе false
  */
 ErrorListManager.prototype.isErrorHasSubTypes = function (errorType) {
-    var hasSubTypes = false;
-    var errorListManager = this;
+    'use strict';
+    var hasSubTypes = false,
+        errorListManager = this;
 
-    $.each(errorListManager.errorDict, function() {
+    $.each(errorListManager.errorDict, function () {
         if (this.title === errorType && this.children !== undefined) {
             hasSubTypes = true;
             return false;

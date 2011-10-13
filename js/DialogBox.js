@@ -10,6 +10,7 @@
  * @param {ErrorListManager} ErrorListManager Класс, отвечающий за работу со списком ошибок
  */
 var DialogBox = function (ErrorListManager) {
+    'use strict';
     this.ErrorListManager = ErrorListManager;
     this.DIALOG_STYLE = "font-family:verdana,sans-serif;font-size:12px;text-align:left";
 };
@@ -18,7 +19,8 @@ var DialogBox = function (ErrorListManager) {
  * Загружает и добавляет файл стилей jQuery UI для
  * темы Redmond.
  */
-DialogBox.prototype.appendStyle = function() {
+DialogBox.prototype.appendStyle = function () {
+    'use strict';
     $('head').append('<link type="text/css" href="' +
         chrome.extension.getURL("css/redmond/jquery-ui-1.8.16.custom.css") +
         '" rel="stylesheet" />');
@@ -30,6 +32,7 @@ DialogBox.prototype.appendStyle = function() {
  * @param {string} text Текст для добавления
  */
 DialogBox.prototype.addTextToMessage = function (text) {
+    'use strict';
     var messageTextarea = $('#dialog-message-text');
     messageTextarea.text(messageTextarea.val(messageTextarea.val() + text));
 };
@@ -40,7 +43,8 @@ DialogBox.prototype.addTextToMessage = function (text) {
  *
  * @return {string} Значение text тега option в ввиде строки.
  */
-DialogBox.prototype.getErrorType = function() {
+DialogBox.prototype.getErrorType = function () {
+    'use strict';
     return $('#type-of-error option:selected').text();
 };
 /**
@@ -49,25 +53,25 @@ DialogBox.prototype.getErrorType = function() {
  * зависят от его содержания.
  */
 DialogBox.prototype.addEventTypeOfError_Change = function () {
-    var dialogBox = this;
+    'use strict';
+    var dialogBox = this,
+        EventHandler = function () {
+            var errorType = dialogBox.getErrorType(),
+                subtypeOfErrorSelect = $('#subtype-of-error'),
+                messageToAppend = '\n';
 
-    var _EventHandler = function () {
-        var errorType = dialogBox.getErrorType(),
-            subtypeOfErrorSelect = $('#subtype-of-error'),
-            messageToAppend = '\n';
+            subtypeOfErrorSelect.empty();
+            messageToAppend += dialogBox.ErrorListManager.getErrorMessageText(errorType);
+            if (dialogBox.ErrorListManager.isErrorHasSubTypes(errorType)) {
+                dialogBox.appendErrorSubTypesList(errorType, subtypeOfErrorSelect);
+                subtypeOfErrorSelect.show();
+            }
 
-        subtypeOfErrorSelect.empty();
-        messageToAppend += dialogBox.ErrorListManager.getErrorMessageText(errorType);
-        if (dialogBox.ErrorListManager.isErrorHasSubTypes(errorType)) {
-            dialogBox.appendErrorSubTypesList(errorType, subtypeOfErrorSelect);
-            subtypeOfErrorSelect.show();
-        }
+            dialogBox.addTextToMessage(messageToAppend);
+        };
 
-        dialogBox.addTextToMessage(messageToAppend);
-    }
-
-    $('#type-of-error').change(_EventHandler);
-    $('#type-of-error').dblclick(_EventHandler);
+    $('#type-of-error').change(EventHandler);
+    $('#type-of-error').dblclick(EventHandler);
 };
 
 /**
@@ -76,18 +80,18 @@ DialogBox.prototype.addEventTypeOfError_Change = function () {
  * зависят от его содержания.
  */
 DialogBox.prototype.addEventSubTypeOfError_Change = function () {
-    var dialogBox = this;
+    'use strict';
+    var dialogBox = this,
+        EventHandler = function () {
+            var messageToAppend = '',
+                errorSubType = dialogBox.getErrorSubType();
 
-    var _EventHandler = function () {
-        var messageToAppend = '',
-            errorSubType = dialogBox.getErrorSubType();
+            messageToAppend += dialogBox.ErrorListManager.getErrorMessageText(errorSubType);
+            dialogBox.addTextToMessage(messageToAppend);
+        };
 
-        messageToAppend += dialogBox.ErrorListManager.getErrorMessageText(errorSubType);
-        dialogBox.addTextToMessage(messageToAppend);
-    }
-
-    $('#subtype-of-error').change(_EventHandler);
-    $('#subtype-of-error').dblclick(_EventHandler);
+    $('#subtype-of-error').change(EventHandler);
+    $('#subtype-of-error').dblclick(EventHandler);
 };
 
 /**
@@ -95,6 +99,7 @@ DialogBox.prototype.addEventSubTypeOfError_Change = function () {
  * Добавляет события для контролов внутри этого слоя.
  */
 DialogBox.prototype.appendDialog = function () {
+    'use strict';
     var dialogBox = this;
     $('body').append('<div id="habracorrect-dialog" title="Сообщение об ошибке" style=' + dialogBox.DIALOG_STYLE + ' hidden>' +
         '<p id="dialog-author-name"></p>' +
@@ -116,6 +121,7 @@ DialogBox.prototype.appendDialog = function () {
  * Обнуляет состояние контролов диалогового окна.
  */
 DialogBox.prototype.resetDialogFields = function () {
+    'use strict';
     $('#dialog-author-name').empty();
     $('#dialog-message-title').empty();
     $('#dialog-author-name').append("<b>Кому:</b>&nbsp;");
@@ -131,6 +137,7 @@ DialogBox.prototype.resetDialogFields = function () {
  * @param name Имя автора статьи
  */
 DialogBox.prototype.setAuthorName = function (name) {
+    'use strict';
     $('#dialog-author-name').append(name);
 };
 
@@ -140,6 +147,7 @@ DialogBox.prototype.setAuthorName = function (name) {
  * @param title Название статьи
  */
 DialogBox.prototype.setMessageTitle = function (title) {
+    'use strict';
     $('#dialog-message-title').append(title);
 };
 
@@ -149,6 +157,7 @@ DialogBox.prototype.setMessageTitle = function (title) {
  * @param text Текст сообщения
  */
 DialogBox.prototype.setMessageText = function (text) {
+    'use strict';
     $('#dialog-message-text').val(text);
 };
 
@@ -160,6 +169,7 @@ DialogBox.prototype.setMessageText = function (text) {
  * @param text Текст сообщения
  */
 DialogBox.prototype.setDialogContent = function (name, title, text) {
+    'use strict';
     var dialogBox = this;
     dialogBox.setAuthorName(name);
     dialogBox.setMessageTitle(title);
@@ -172,6 +182,7 @@ DialogBox.prototype.setDialogContent = function (name, title, text) {
  * @return Текст сообщения
  */
 DialogBox.prototype.getMessageText = function () {
+    'use strict';
     return $('#dialog-message-text').val();
 };
 
@@ -180,14 +191,15 @@ DialogBox.prototype.getMessageText = function () {
  * option для каждого типа ошибки.
  */
 DialogBox.prototype.addTypeOfErrorOptions = function () {
-    var dialogBox = this;
-    var getTypeOfErrorSelect = function () {
-        return $('#type-of-error');
-    };
+    'use strict';
+    var dialogBox = this,
+        getTypeOfErrorSelect = function () {
+            return $('#type-of-error');
+        },
+        typeOfErrorSelect = getTypeOfErrorSelect();
 
-    var typeOfErrorSelect = getTypeOfErrorSelect();
     if (dialogBox.ErrorListManager.errorDict) {
-        $.each(dialogBox.ErrorListManager.errorDict, function() {
+        $.each(dialogBox.ErrorListManager.errorDict, function () {
             typeOfErrorSelect.append(new Option(this.title, 0));
         });
     }
@@ -201,10 +213,11 @@ DialogBox.prototype.addTypeOfErrorOptions = function () {
  * @param {jQuery object} subtypeOfErrorSelect Select для подтипов ошибок
  */
 DialogBox.prototype.appendErrorSubTypesList = function (errorType, subtypeOfErrorSelect) {
+    'use strict';
     var dialogBox = this;
-    $.each(dialogBox.ErrorListManager.errorDict, function() {
+    $.each(dialogBox.ErrorListManager.errorDict, function () {
         if (this.title === errorType) {
-            $.each(this.children, function() {
+            $.each(this.children, function () {
                 subtypeOfErrorSelect.append(new Option(this.title, 0));
             });
         }
@@ -219,6 +232,7 @@ DialogBox.prototype.appendErrorSubTypesList = function (errorType, subtypeOfErro
  * @param {string} title Название статьи
  */
 DialogBox.prototype.showDialog = function (name, title, sendMessage) {
+    'use strict';
     var dialogBox = this;
     $('#habracorrect-dialog').attr('hidden', 'true');
     $('#habracorrect-dialog').dialog({
@@ -248,6 +262,7 @@ DialogBox.prototype.showDialog = function (name, title, sendMessage) {
  *
  * @return {string} текст подтипа ошибки.
  */
-DialogBox.prototype.getErrorSubType = function() {
+DialogBox.prototype.getErrorSubType = function () {
+    'use strict';
     return $('#subtype-of-error option:selected').text();
 };

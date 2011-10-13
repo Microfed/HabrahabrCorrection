@@ -2,43 +2,5 @@
 <head>
     <title>HabraCorrection</title>
     <script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
-    <script>
-        const AD_TEXT = '\n\n<sub>Сделано с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
-
-        chrome.extension.onRequest.addListener(
-                function(request, sender, sendResponse) {
-                    if (request.to_send_data == true) {
-                        var name = request.send_author;
-                        var title = request.send_title;
-                        var text = request.send_text;
-                        var data = getData(name, title, text);
-                        sendResponse({send_data: data});
-                    }
-                    if (request.get_errorList) {
-                        var errorList = JSON.parse(localStorage['errorList']);
-                        sendResponse({data: errorList});
-                    }
-                }
-        );
-
-        function getData(name, title, text) {
-            return "message[recipients]=" + encodeURIComponent(name) + "&message[title]=" + encodeURIComponent(title) +
-                    "&message[text]=" + encodeURIComponent(text) + encodeURIComponent(getAdText());
-        }
-
-        /*
-         Добавляет в сообщение информацию о расширении в качестве
-         рекламы, если пользователь установил соответствующую опцию
-         */
-        function getAdText() {
-            var isAdvtAttachToMessage = localStorage["isAdvtAttachToMessage"];
-
-            if (isAdvtAttachToMessage == 'true') {
-                return AD_TEXT;
-            }
-            else {
-                return ''
-            }
-        }
-    </script>
+    <script type="text/javascript" src="/js/background.js"></script>
 </head>

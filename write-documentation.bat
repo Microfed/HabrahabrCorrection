@@ -1,5 +1,6 @@
 @echo off
-set content-script-path=.\js\DialogBox.js .\js\ErrorListManager.js .\js\HabraPage.js .\js\HabraCorrector.js .\js\content-script.js
+set js-path=.\js\
+set content-script-path=%js-path%DialogBox.js %js-path%ErrorListManager.js %js-path%HabraPage.js %js-path%HabraCorrector.js %js-path%content-script.js %js-path%options.js %js-path%background.js
 set option=-a -p
 
 jsrun %content-script-path% %option%

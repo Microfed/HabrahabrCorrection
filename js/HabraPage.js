@@ -5,10 +5,11 @@
 
 /**
  * @class Отвечает за работу со страницей хабра-статьи.
- * @constructor 
+ * @constructor
  * @name HabraPage
  */
-var HabraPage = function() {
+var HabraPage = function () {
+    'use strict';
     this.AUTHOR_CLASS_NAME = '.author';
     this.AUTHOR_CLASS_NAME_MODIFIED = '.author.karmaloaded';
     this.HABRAHABR_URL = 'habrahabr.ru';
@@ -21,6 +22,7 @@ var HabraPage = function() {
  * с комментами (это означает, что открыта страница статьи).
  */
 HabraPage.prototype.isCurrentUrlCorrect = function () {
+    'use strict';
     var isCorrect = false,
         url = document.baseURI;
 
@@ -41,6 +43,7 @@ HabraPage.prototype.isCurrentUrlCorrect = function () {
  * @return {string} Ник автора статьи
  */
 HabraPage.prototype.getAuthorName = function () {
+    'use strict';
     var author;
     if ($(this.AUTHOR_CLASS_NAME).length) {
         author = $(this.AUTHOR_CLASS_NAME + ' a').text();
@@ -57,6 +60,7 @@ HabraPage.prototype.getAuthorName = function () {
  * @return {string} Название статьи
  */
 HabraPage.prototype.getArticleTitle = function () {
+    'use strict';
     var title = $('.post .title');
     //удаляем все лишние символы в начале и конце заголовка
     return title.text().replace(/^\s*|\s*$|[\t\n]/g, '');
@@ -68,6 +72,7 @@ HabraPage.prototype.getArticleTitle = function () {
  * @return {string} Выделенный текст
  */
 HabraPage.prototype.getSelectedText = function () {
+    'use strict';
     var txt;
     if (window.getSelection) {
         txt = window.getSelection().toString();
@@ -86,5 +91,6 @@ HabraPage.prototype.getSelectedText = function () {
  * @return {string} Текст ошибки, подготовленный для сообщения
  */
 HabraPage.prototype.getContentText = function (articleUrl) {
+    'use strict';
     return 'Ошибка в статье <a href="' + articleUrl + '">' + this.getArticleTitle() + '</a>\n<blockquote>' + this.getSelectedText() + '</blockquote>';
 };

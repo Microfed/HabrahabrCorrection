@@ -40,6 +40,8 @@ java -jar %yuicompressor-path% -o %pack-js-path%\DialogBox.js %js-path%\DialogBo
 java -jar %yuicompressor-path% -o %pack-js-path%\ErrorListManager.js %js-path%\ErrorListManager.js
 java -jar %yuicompressor-path% -o %pack-js-path%\HabraCorrector.js %js-path%\HabraCorrector.js
 java -jar %yuicompressor-path% -o %pack-js-path%\HabraPage.js %js-path%\HabraPage.js
+java -jar %yuicompressor-path% -o %pack-js-path%\background.js %js-path%\background.js
+java -jar %yuicompressor-path% -o %pack-js-path%\options.js %js-path%\options.js
 
 echo "Compresing files..."
 %zip-utility-path%7z a -r -tzip -o{"%root-dir%"} "pack_extension.zip" ready-to-pack\*

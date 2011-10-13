@@ -13,17 +13,17 @@ var URL_SEND_MESSAGE = "http://habrahabr.ru/ajax/messages/add/";
  * @constructor
  * @name HabraCorrector
  */
-var HabraCorrector = function() {
+var HabraCorrector = function () {
+    'use strict';
     this.habraPage = new HabraPage();
-    this.errorListManager;
-    this.dialogBox;
 };
 
 /**
  * Загружает список ошибок из JSON-файла. После загрузки добавляет диалоговое окно
  * в DOM страницы.
  */
-HabraCorrector.prototype.loadErrorListAndAppendDialogBox = function() {
+HabraCorrector.prototype.loadErrorListAndAppendDialogBox = function () {
+    'use strict';
     var habraCorrector = this;
 
     chrome.extension.sendRequest({get_errorList: true},
@@ -41,7 +41,8 @@ HabraCorrector.prototype.loadErrorListAndAppendDialogBox = function() {
  * - загружает список ошибок;
  * - добавляет к DOM страницы диалоговое окно.
  */
-HabraCorrector.prototype.Init = function() {
+HabraCorrector.prototype.Init = function () {
+    'use strict';
     if (this.habraPage.isCurrentUrlCorrect()) {
         this.loadErrorListAndAppendDialogBox();
     }
@@ -55,7 +56,8 @@ HabraCorrector.prototype.Init = function() {
  *
  * @param response Ответ на запрос к серверу
  */
-HabraCorrector.prototype.alertWhenFail = function(response) {
+HabraCorrector.prototype.alertWhenFail = function (response) {
+    'use strict';
     var resp = $(response).find('error');
     if (resp[0] !== undefined) {
         alert(resp[0].textContent);
@@ -67,7 +69,8 @@ HabraCorrector.prototype.alertWhenFail = function(response) {
  *
  * @param data Данные
  */
-HabraCorrector.prototype.sendDataPost = function(data) {
+HabraCorrector.prototype.sendDataPost = function (data) {
+    'use strict';
     var habraCorrector = this;
     $.post(URL_SEND_MESSAGE, data, function (response) {
         habraCorrector.alertWhenFail(response);
@@ -83,7 +86,8 @@ HabraCorrector.prototype.sendDataPost = function(data) {
  * @param title Название статьи
  * @param messageText Текст сообщения
  */
-HabraCorrector.prototype.sendRequestToBackgroundPage = function(name, title, messageText) {
+HabraCorrector.prototype.sendRequestToBackgroundPage = function (name, title, messageText) {
+    'use strict';
     chrome.extension.sendRequest({to_send_data: true, send_author: name, send_title: title, send_text: messageText},
         function (response) {
             HabraCorrector.prototype.sendDataPost(response.send_data);
@@ -93,13 +97,14 @@ HabraCorrector.prototype.sendRequestToBackgroundPage = function(name, title, mes
 /**
  * Заполняет необходимые поля и показывает диалоговое окно пользователю.
  */
-HabraCorrector.prototype.startDialog = function() {
-    var habraCorrector = this;
+HabraCorrector.prototype.startDialog = function () {
+    'use strict';
+    var habraCorrector = this,
+        articleUrl = document.baseURI,
+        author = habraCorrector.habraPage.getAuthorName(),
+        title = 'Ошибка в статье "' + habraCorrector.habraPage.getArticleTitle() + '"',
+        content = habraCorrector.habraPage.getContentText(articleUrl);
     if (habraCorrector.habraPage.isCurrentUrlCorrect()) {
-        var articleUrl = document.baseURI,
-            author = habraCorrector.habraPage.getAuthorName(),
-            title = 'Ошибка в статье "' + habraCorrector.habraPage.getArticleTitle() + '"',
-            content = habraCorrector.habraPage.getContentText(articleUrl);
         habraCorrector.dialogBox.resetDialogFields();
         habraCorrector.dialogBox.setDialogContent(author, title, content);
         habraCorrector.dialogBox.showDialog(author, title, habraCorrector.sendRequestToBackgroundPage);
@@ -110,7 +115,8 @@ HabraCorrector.prototype.startDialog = function() {
  * Добавляет событие для сочетания клавиш Ctrl+Enter.
  * При срабатывании показывает диалоговое окно для отправки сообщения об ошибке.
  */
-HabraCorrector.prototype.addHotKey = function() {
+HabraCorrector.prototype.addHotKey = function () {
+    'use strict';
     var habraCorrector = this;
     window.addEventListener("keydown", function (event) {
         var modifier = event.ctrlKey || event.metaKey;
