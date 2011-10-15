@@ -4,9 +4,55 @@
  */
 
 /**
+ * @class Класс для работы с настройками расширения.
+ * @constructor
+ * @name Options
+ */
+var Options = {};
+
+/**
+ * Проверяет, поддерживается LocalStorage.
+ *
+ * @return {boolean} Возвращает true, если браузер поддерживает LocalStorage, иначе - false
+ */
+Options.isLocalStorageEnable = function () {
+    'use strict';
+    return (window.hasOwnProperty('localStorage') && window.localStorage !== null);
+};
+
+/**
+ * Устанавливает значение заданного элемента
+ * в локальном хранилище.
+ *
+ * @param {string} name Имя параметра
+ * @param {string} value Значение параметра
+ */
+Options.setLocalStorageItem = function (name, value) {
+    'use strict';
+    if (Options.isLocalStorageEnable()) {
+        localStorage.setItem(name, value);
+    }
+};
+
+/**
+ * Получает значение параметра из
+ * локального хранилища.
+ *
+ * @param {string} name Имя параметра
+ */
+Options.getLocalStorageItem = function (name) {
+    'use strict';
+    if (Options.isLocalStorageEnable()) {
+        return localStorage.getItem(name);
+    } else {
+        return undefined;
+    }
+};
+
+/**
  * @return Возвращает слой, содержащий dynatree-дерево.
  */
-var getTreeDiv = function () {
+Options.getTreeDiv = function () {
     'use strict';
     return $("#errorTree");
 };
@@ -16,7 +62,7 @@ var getTreeDiv = function () {
  *
  * @param node Элемент дерева
  */
-function printNodeInfo(node) {
+Options.printNodeInfo = function (node) {
     'use strict';
     $('#activeTreeElement #title').val(node.data.title);
     $('#activeTreeElement #messageText').val(node.data.messageText);
@@ -24,25 +70,25 @@ function printNodeInfo(node) {
         $('#activeTreeElement #isFolder').attr("checked", "checked");
     }
     $('#activeTreeElement').show();
-}
+};
 
 /**
  * Очищает информационную панель.
  */
-function clearNodeInfo() {
+Options.clearNodeInfo = function () {
     'use strict';
     $("#activeTreeElement #title").empty();
     $("#activeTreeElement #messageText").empty();
     $('#activeTreeElement #isFolder').removeAttr("checked");
     $('#activeTreeElement').hide();
-}
+};
 
 /**
  * Показывает заданное сообщение с анимацией.
  *
  * @param messageText Текст сообщения
  */
-function printStatusMessage(messageText) {
+Options.printStatusMessage = function (messageText) {
     'use strict';
     $('#status').append(messageText);
     $('#status').show();
@@ -51,25 +97,25 @@ function printStatusMessage(messageText) {
             $('#status').empty();
         });
     }, 2000);
-}
+};
 
 /**
  * Сохраняет текущие значения контролов в качестве соответствующих опций.
  */
-function save_options() {
+Options.save_options = function () {
     'use strict';
-    localStorage["isAdvtAttachToMessage"] = document.getElementById('isAdvtAttachToMessage').checked;
+    Options.setLocalStorageItem('isAdvtAttachToMessage', document.getElementById('isAdvtAttachToMessage').checked);
 
-    var dict = getTreeDiv().dynatree("getTree").toDict();
-    localStorage["errorList"] = JSON.stringify(dict.children);
+    var dict = Options.getTreeDiv().dynatree("getTree").toDict();
+    Options.setLocalStorageItem('errorList', JSON.stringify(dict.children));
 
-    printStatusMessage("Сохранено");
-}
+    Options.printStatusMessage("Сохранено");
+};
 
 /**
  * Применяет стили для кнопок.
  */
-var setButtonUI = function () {
+Options.setButtonUI = function () {
     'use strict';
     $('button', '#activeTreeElement').button();
 };
@@ -77,9 +123,9 @@ var setButtonUI = function () {
 /**
  * Удаляет активный элемент из дерева.
  */
-var deleteActiveElement = function () {
+Options.deleteActiveElement = function () {
     'use strict';
-    getTreeDiv().dynatree("getActiveNode").remove();
+    Options.getTreeDiv().dynatree("getActiveNode").remove();
 
     //Fix error: плагин после удаления элемента срет в стиль этого дива (display: none)
     $('#activeTreeElement').show();
@@ -88,9 +134,9 @@ var deleteActiveElement = function () {
 /**
  * Применяет изменения для активного элемента.
  */
-var acceptChangeActiveElement = function () {
+Options.acceptChangeActiveElement = function () {
     'use strict';
-    var node = getTreeDiv().dynatree("getActiveNode"),
+    var node = Options.getTreeDiv().dynatree("getActiveNode"),
         title = $('#activeTreeElement #title').val(),
         messageText = $('#activeTreeElement #messageText').val(),
         isFolder = $('input#isFolder').attr('checked') ? true : false;
@@ -108,11 +154,11 @@ var acceptChangeActiveElement = function () {
 /**
  * Добавляет новый элемент в дерево.
  */
-var addNewElement = function () {
+Options.addNewElement = function () {
     'use strict';
     var parentNode,
-        root = getTreeDiv().dynatree("getRoot"),
-        activeNode = getTreeDiv().dynatree("getActiveNode"),
+        root = Options.getTreeDiv().dynatree("getRoot"),
+        activeNode = Options.getTreeDiv().dynatree("getActiveNode"),
         title = $('#activeTreeElement #title').val(),
         messageText = $('#activeTreeElement #messageText').val(),
         isFolder = false;
@@ -146,38 +192,38 @@ var addNewElement = function () {
  *
  * Используется библиотеки jQuery.dynatree, jQuery UI.
  */
-function addButtonsToManageTree() {
+Options.addButtonsToManageTree = function () {
     'use strict';
-    setButtonUI();
+    Options.setButtonUI();
 
-    $('#delete', '#activeTreeElement').click(deleteActiveElement);
-    $('#accept', '#activeTreeElement').click(acceptChangeActiveElement);
-    $('#add', '#activeTreeElement').click(addNewElement);
-}
+    $('#delete', '#activeTreeElement').click(Options.deleteActiveElement);
+    $('#accept', '#activeTreeElement').click(Options.acceptChangeActiveElement);
+    $('#add', '#activeTreeElement').click(Options.addNewElement);
+};
 
 /**
  * Устанавливает значения для дерева, корректно его отображает.
  */
-function setTreeInfo() {
+Options.setTreeInfo = function () {
     'use strict';
-    var treeDiv = getTreeDiv();
+    var treeDiv = Options.getTreeDiv();
 
     if (treeDiv.text() !== '') {
         treeDiv.dynatree("getTree").reload();
     } else {
         treeDiv.dynatree({
             onActivate: function (node) {
-                printNodeInfo(node);
+                Options.printNodeInfo(node);
             },
             onDeactivate: function () {
-                clearNodeInfo();
+                Options.clearNodeInfo();
             },
-            children: JSON.parse(localStorage["errorList"])
+            children: JSON.parse(Options.getLocalStorageItem('errorList'))
         });
 
-        addButtonsToManageTree();
+        Options.addButtonsToManageTree();
     }
-}
+};
 
 /**
  * Получает список ошибок из файла (в папке расширения),
@@ -185,25 +231,25 @@ function setTreeInfo() {
  * обновляет информацию в дереве ошибок,
  * печатает сообщение, что все хорошо.
  */
-function setErrorListFromFile() {
+Options.setErrorListFromFile = function () {
     'use strict';
     $.getJSON(chrome.extension.getURL('/errorList.json'),
         function (data) {
-            localStorage["errorList"] = JSON.stringify(data);
-            setTreeInfo();
-            printStatusMessage("Список ошибок загружен");
+            Options.setLocalStorageItem('errorList', JSON.stringify(data));
+            Options.setTreeInfo();
+            Options.printStatusMessage("Список ошибок загружен");
         })
         .error(function () {
-            printStatusMessage("Проблема при загрузке файла. Список ошибок не обновлен.");
+            Options.printStatusMessage("Проблема при загрузке файла. Список ошибок не обновлен.");
         });
-}
+};
 
 /**
  * Восстанавливает настройки.
  */
-function restore_options() {
+Options.restore_options = function () {
     'use strict';
-    var isAdvtAttachToMessage = localStorage["isAdvtAttachToMessage"],
+    var isAdvtAttachToMessage = Options.getLocalStorageItem('isAdvtAttachToMessage'),
         result = false;
 
     if (isAdvtAttachToMessage === 'true') {
@@ -211,9 +257,9 @@ function restore_options() {
     }
     document.getElementById('isAdvtAttachToMessage').checked = result;
 
-    if (localStorage["errorList"] === undefined) {
-        setErrorListFromFile();
+    if (Options.getLocalStorageItem('errorList') === undefined) {
+        Options.setErrorListFromFile();
     }
 
-    setTreeInfo();
-}
+    Options.setTreeInfo();
+};
