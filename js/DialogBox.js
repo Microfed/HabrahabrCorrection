@@ -242,7 +242,7 @@ DialogBox.prototype.showDialog = function (name, title, sendMessage) {
     }, {
         buttons: {
             "Опечатка!": function () {
-                dialogBox.addTextToMessage("\nОпечатка!");
+                dialogBox.addTextToMessage("\nОпечатка.");
             },
             "Отправить": function () {
                 sendMessage(name, title, dialogBox.getMessageText());

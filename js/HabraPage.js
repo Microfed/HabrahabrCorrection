@@ -10,8 +10,8 @@
  */
 var HabraPage = function () {
     'use strict';
-    this.AUTHOR_CLASS_NAME = '.author';
-    this.AUTHOR_CLASS_NAME_MODIFIED = '.author.karmaloaded';
+    this.AUTHOR_CLASS_NAME = 'div.vcard.author.full a.fn.nickname.url';
+    this.AUTHOR_CLASS_NAME_MODIFIED = 'div.vcard.author.full a.fn.nickname.url.karmaloaded';
     this.HABRAHABR_URL = 'habrahabr.ru';
 };
 
@@ -45,11 +45,16 @@ HabraPage.prototype.isCurrentUrlCorrect = function () {
 HabraPage.prototype.getAuthorName = function () {
     'use strict';
     var author;
-    if ($(this.AUTHOR_CLASS_NAME).length) {
-        author = $(this.AUTHOR_CLASS_NAME + ' a').text();
+    var length = $(this.AUTHOR_CLASS_NAME).length;
+    if (length > 0) {
+        for (var i = 0; i < length; i = +1) {
+            if ($(this.AUTHOR_CLASS_NAME).attr('title') === 'Автор текста') {
+                author = $(this.AUTHOR_CLASS_NAME).text();
+            }
+        }
     } else {
         // Некоторые расширения для хабры меняют имя класса
-        author = $(this.AUTHOR_CLASS_NAME_MODIFIED + ' a').text();
+        author = $(this.AUTHOR_CLASS_NAME_MODIFIED).text();
     }
     return author;
 };
@@ -61,9 +66,9 @@ HabraPage.prototype.getAuthorName = function () {
  */
 HabraPage.prototype.getArticleTitle = function () {
     'use strict';
-    var title = $('.post .title');
+    var title = $('div.hentry h2.entry-title.single-entry-title span.topic');
     //удаляем все лишние символы в начале и конце заголовка
-    return title.text().replace(/^\s*|\s*$|[\t\n]/g, '');
+    return title.text();
 };
 
 /**
