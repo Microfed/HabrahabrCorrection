@@ -45,7 +45,7 @@ Options.getLocalStorageItem = function (name) {
     if (Options.isLocalStorageEnable()) {
         return localStorage.getItem(name);
     } else {
-        return undefined;
+        return null;
     }
 };
 
@@ -234,13 +234,12 @@ Options.setTreeInfo = function () {
  */
 Options.setErrorListFromFile = function () {
     'use strict';
-    $.getJSON(chrome.extension.getURL('/errorList.json'),
+    $.getJSON(chrome.extension.getURL('errorList.json'),
         function (data) {
             Options.setLocalStorageItem('errorList', JSON.stringify(data));
             Options.setTreeInfo();
             Options.printStatusMessage("Список ошибок загружен");
-        })
-        .error(function () {
+        }).error(function () {
             Options.printStatusMessage("Проблема при загрузке файла. Список ошибок не обновлен.");
         });
 };
@@ -267,15 +266,20 @@ Options.restore_options = function () {
     var isAdvtAttachToMessage = Options.getLocalStorageItem('isAdvtAttachToMessage'),
         isSilentModeOn = Options.getLocalStorageItem('silentMode');
 
-    if (isSilentModeOn === undefined) {
+    if (isSilentModeOn === null) {
         isSilentModeOn = 'false';
         Options.setLocalStorageItem('silentMode', isSilentModeOn);
+    }
+
+    if (isAdvtAttachToMessage === null) {
+        isAdvtAttachToMessage = 'true';
+        Options.setLocalStorageItem('isAdvtAttachToMessage', isAdvtAttachToMessage);
     }
 
     document.getElementById('isAdvtAttachToMessage').checked = Options.getBooleanValueFromString(isAdvtAttachToMessage);
     document.getElementById('isSilentModeOn').checked = Options.getBooleanValueFromString(isSilentModeOn);
 
-    if (Options.getLocalStorageItem('errorList') === undefined) {
+    if (Options.getLocalStorageItem('errorList') === undefined || Options.getLocalStorageItem('errorList') === null) {
         Options.setErrorListFromFile();
     }
 
