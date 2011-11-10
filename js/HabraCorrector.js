@@ -79,7 +79,7 @@ HabraCorrector.prototype.sendDataPost = function (data) {
 
 /**
  * Отправляет сообщение фоновой странице расширения, отправляя данные для формирования сообщения
- * об ошибке; принимает ответ и шлет сформированное сообщение автору статьи. Для успешнйо отправки
+ * об ошибке; принимает ответ и шлет сформированное сообщение автору статьи. Для успешной отправки
  * сообщения требуется быть аутентифицированным пользователем.
  *
  * @param name Имя автора статьи
@@ -88,10 +88,27 @@ HabraCorrector.prototype.sendDataPost = function (data) {
  */
 HabraCorrector.prototype.sendRequestToBackgroundPage = function (name, title, messageText) {
     'use strict';
-    chrome.extension.sendRequest({to_send_data: true, send_author: name, send_title: title, send_text: messageText},
+    chrome.extension.sendRequest(
+        {
+            to_send_data: true,
+            send_author: name,
+            send_title: title,
+            send_text: messageText
+        },
         function (response) {
             HabraCorrector.prototype.sendDataPost(response.send_data);
-        });
+        }
+    );
+};
+
+/**
+ * Проверяет корректность текущей страницы.
+ *
+ * @return {boolean} True, если страница соответствует статье на Хабре, иначе False
+ */
+HabraCorrector.prototype.isItArticlePage = function () {
+    'use strict';
+    return this.habraPage.isCurrentUrlCorrect();
 };
 
 /**
@@ -99,29 +116,50 @@ HabraCorrector.prototype.sendRequestToBackgroundPage = function (name, title, me
  */
 HabraCorrector.prototype.startDialog = function () {
     'use strict';
-    var habraCorrector = this,
-        articleUrl = document.baseURI,
-        author = habraCorrector.habraPage.getAuthorName(),
-        title = 'Ошибка в статье "' + habraCorrector.habraPage.getArticleTitle() + '"',
-        content = habraCorrector.habraPage.getContentText(articleUrl);
-    if (habraCorrector.habraPage.isCurrentUrlCorrect()) {
-        habraCorrector.dialogBox.resetDialogFields();
-        habraCorrector.dialogBox.setDialogContent(author, title, content);
-        habraCorrector.dialogBox.showDialog(author, title, habraCorrector.sendRequestToBackgroundPage);
+    var articleUrl = document.baseURI,
+        author = this.habraPage.getAuthorName(),
+        title = 'Ошибка в статье "' + this.habraPage.getArticleTitle() + '"',
+        content = this.habraPage.getContentText(articleUrl),
+        dialogResult,
+        self = this;
+
+    if (this.isItArticlePage()) {
+        this.dialogBox.resetDialogFields();
+        this.dialogBox.setDialogContent(author, title, content);
+        dialogResult = this.dialogBox.showDialog(author, title);
+        dialogResult.done(function () {
+            self.sendRequestToBackgroundPage(author, title, self.dialogBox.getMessageText());
+            self.habraPage.resetState();
+        });
     }
 };
 
 /**
  * Добавляет событие для сочетания клавиш Ctrl+Enter.
  * При срабатывании показывает диалоговое окно для отправки сообщения об ошибке.
+ *
+ * С версии 1.0.0. добавлен silent mode. Если он включен, то выделенный текст добавляется
+ * в буфер для последующего включения в общее сообщение.
+ * Для вызова диалогового окна нужно сбросить выделение с текста и нажать Ctrl+Enter.
  */
 HabraCorrector.prototype.addHotKey = function () {
     'use strict';
-    var habraCorrector = this;
+    var habraCorrector = this,
+        silentMode;
+
     window.addEventListener("keydown", function (event) {
         var modifier = event.ctrlKey || event.metaKey;
         if (modifier && event.keyCode === 13) {
-            habraCorrector.startDialog();
+            chrome.extension.sendRequest({get_silentMode: true},
+                function (response) {
+                    silentMode = response.silent_mode;
+                    if (silentMode === 'true' && habraCorrector.habraPage.getSelectedText() !== '') {
+                        habraCorrector.habraPage.addErrorText();
+                    } else {
+                        habraCorrector.habraPage.addErrorText();
+                        habraCorrector.startDialog();
+                    }
+                });
         }
     }, false);
 };

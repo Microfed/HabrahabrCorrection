@@ -13,6 +13,7 @@ var HabraPage = function () {
     this.AUTHOR_CLASS_NAME = 'div.vcard.author.full a.fn.nickname.url';
     this.AUTHOR_CLASS_NAME_MODIFIED = 'div.vcard.author.full a.fn.nickname.url.karmaloaded';
     this.HABRAHABR_URL = 'habrahabr.ru';
+    this.selectedErrors = []; //текущий список выделенных пользователем ошибок
 };
 
 /**
@@ -44,17 +45,21 @@ HabraPage.prototype.isCurrentUrlCorrect = function () {
  */
 HabraPage.prototype.getAuthorName = function () {
     'use strict';
-    var author;
-    var length = $(this.AUTHOR_CLASS_NAME).length;
+    var author,
+        length = $(this.AUTHOR_CLASS_NAME).length,
+        i;
+
     if (length > 0) {
-        for (var i = 0; i < length; i = +1) {
+        for (i = 0; i < length; i = +1) {
             if ($(this.AUTHOR_CLASS_NAME).attr('title') === 'Автор текста') {
                 author = $(this.AUTHOR_CLASS_NAME).text();
             }
         }
-    } else {
+    } else if ($(this.AUTHOR_CLASS_NAME_MODIFIED).length > 0) {
         // Некоторые расширения для хабры меняют имя класса
         author = $(this.AUTHOR_CLASS_NAME_MODIFIED).text();
+    } else if ($('div.infopanel div.author a').length > 0) {
+        author = $('div.infopanel div.author a').text();
     }
     return author;
 };
@@ -66,8 +71,13 @@ HabraPage.prototype.getAuthorName = function () {
  */
 HabraPage.prototype.getArticleTitle = function () {
     'use strict';
-    var title = $('div.hentry h2.entry-title.single-entry-title span.topic');
-    //удаляем все лишние символы в начале и конце заголовка
+    var title;
+    if ($('div.hentry h2.entry-title.single-entry-title span.topic').length > 0) {
+        title = $('div.hentry h2.entry-title.single-entry-title span.topic');
+    } else if ($('div.post h2.title span.post_title').length > 0) {
+        title = $('div.post h2.title span.post_title');
+    }
+
     return title.text();
 };
 
@@ -78,7 +88,7 @@ HabraPage.prototype.getArticleTitle = function () {
  */
 HabraPage.prototype.getSelectedText = function () {
     'use strict';
-    var txt;
+    var txt = '';
     if (window.getSelection) {
         txt = window.getSelection().toString();
     } else if (document.getSelection) {
@@ -90,6 +100,23 @@ HabraPage.prototype.getSelectedText = function () {
 };
 
 /**
+ * @return {string} Возвращает строку, содержащую все выделенные пользователем
+ * ошибки с момента последней отправки сообщения об ошибке.
+ */
+HabraPage.prototype.getErrorsText = function () {
+    'use strict';
+    var i,
+        textString = '',
+        length = this.selectedErrors.length;
+
+    for (i = 0; i < length; i += 1) {
+        textString += this.selectedErrors[i];
+    }
+
+    return textString;
+};
+
+/**
  *  Возвращает выделенный текст, как цитату.
  *
  * @param {string} articleUrl Ссылка на статью
@@ -97,5 +124,26 @@ HabraPage.prototype.getSelectedText = function () {
  */
 HabraPage.prototype.getContentText = function (articleUrl) {
     'use strict';
-    return 'Ошибка в статье <a href="' + articleUrl + '">' + this.getArticleTitle() + '</a>\n<blockquote>' + this.getSelectedText() + '</blockquote>';
+    return 'Ошибка в статье <a href="' + articleUrl + '">' + this.getArticleTitle() + '</a>' + this.getErrorsText();
+};
+
+/**
+ * Добавляет выделенный текст в буфер для последующего включения
+ * текста в сообщение об ошибках.
+ */
+HabraPage.prototype.addErrorText = function () {
+    'use strict';
+    var selectedText = this.getSelectedText();
+    if (selectedText !== '') {
+        this.selectedErrors.push('\n<blockquote>' + selectedText + '</blockquote>');
+    }
+};
+
+/**
+ * Очищает буфер выделенных ошибок. Обычно срабатывает после
+ * отправки сообщения об ошибках пользователю.
+ */
+HabraPage.prototype.resetState = function () {
+    'use strict';
+    this.selectedErrors = [];
 };

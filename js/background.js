@@ -24,6 +24,23 @@ function getAdText() {
 }
 
 /**
+ * Возващает настройки из localStorage
+ * @param {string} name Название опции
+ */
+function getSettings(name) {
+    'use strict';
+    var value = '';
+
+    if (name !== undefined) {
+        if (localStorage[name] !== undefined) {
+            value = localStorage[name];
+        }
+    }
+
+    return value;
+}
+
+/**
  * Возвращает готовые для отправки данные.
  *
  * @param name Ник получателя
@@ -51,6 +68,9 @@ chrome.extension.onRequest.addListener(
         if (request.get_errorList) {
             errorList = JSON.parse(localStorage['errorList']);
             sendResponse({data: errorList});
+        }
+        if (request.get_silentMode) {
+            sendResponse({silent_mode: getSettings('silentMode')});
         }
     }
 );

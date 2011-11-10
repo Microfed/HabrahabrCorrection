@@ -25,7 +25,7 @@ Options.isLocalStorageEnable = function () {
  * в локальном хранилище.
  *
  * @param {string} name Имя параметра
- * @param {string} value Значение параметра
+ * @param value Значение параметра
  */
 Options.setLocalStorageItem = function (name, value) {
     'use strict';
@@ -105,6 +105,7 @@ Options.printStatusMessage = function (messageText) {
 Options.save_options = function () {
     'use strict';
     Options.setLocalStorageItem('isAdvtAttachToMessage', document.getElementById('isAdvtAttachToMessage').checked);
+    Options.setLocalStorageItem('silentMode', document.getElementById('isSilentModeOn').checked);
 
     var dict = Options.getTreeDiv().dynatree("getTree").toDict();
     Options.setLocalStorageItem('errorList', JSON.stringify(dict.children));
@@ -245,17 +246,34 @@ Options.setErrorListFromFile = function () {
 };
 
 /**
+ * Возвращает соответствующее булево значение, содержащееся в строке.
+ * @param {string} string Строка для разбора
+ * @return {boolean} True, если строка содержит 'true', иначе False
+ */
+Options.getBooleanValueFromString = function (string) {
+    'use strict';
+    var result = false;
+    if (string === 'true') {
+        result = true;
+    }
+    return result;
+};
+
+/**
  * Восстанавливает настройки.
  */
 Options.restore_options = function () {
     'use strict';
     var isAdvtAttachToMessage = Options.getLocalStorageItem('isAdvtAttachToMessage'),
-        result = false;
+        isSilentModeOn = Options.getLocalStorageItem('silentMode');
 
-    if (isAdvtAttachToMessage === 'true') {
-        result = true;
+    if (isSilentModeOn === undefined) {
+        isSilentModeOn = 'false';
+        Options.setLocalStorageItem('silentMode', isSilentModeOn);
     }
-    document.getElementById('isAdvtAttachToMessage').checked = result;
+
+    document.getElementById('isAdvtAttachToMessage').checked = Options.getBooleanValueFromString(isAdvtAttachToMessage);
+    document.getElementById('isSilentModeOn').checked = Options.getBooleanValueFromString(isSilentModeOn);
 
     if (Options.getLocalStorageItem('errorList') === undefined) {
         Options.setErrorListFromFile();

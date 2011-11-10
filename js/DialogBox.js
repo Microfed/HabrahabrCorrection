@@ -228,12 +228,12 @@ DialogBox.prototype.appendErrorSubTypesList = function (errorType, subtypeOfErro
  * Показывает диалоговое окно для отправки сообщения автору статьи.
  * Добавляет события для контролов диалогового окна.
  *
- * @param {string} name Имя автора статьи
- * @param {string} title Название статьи
  */
-DialogBox.prototype.showDialog = function (name, title, sendMessage) {
+DialogBox.prototype.showDialog = function () {
     'use strict';
-    var dialogBox = this;
+    var dialogBox = this,
+        dialogResult = $.Deferred();
+
     $('#habracorrect-dialog').attr('hidden', 'true');
     $('#habracorrect-dialog').dialog({
         width: 500
@@ -245,16 +245,19 @@ DialogBox.prototype.showDialog = function (name, title, sendMessage) {
                 dialogBox.addTextToMessage("\nОпечатка.");
             },
             "Отправить": function () {
-                sendMessage(name, title, dialogBox.getMessageText());
+                dialogResult.resolve();
                 $(this).dialog("close");
             },
             "Отменить": function () {
+                dialogResult.reject();
                 $(this).dialog("close");
             }
         }
     });
 
     $('.ui-dialog-buttonpane').find('button:contains("Опечатка!")').css("margin-right", "180px");
+
+    return dialogResult.promise();
 };
 
 /**
