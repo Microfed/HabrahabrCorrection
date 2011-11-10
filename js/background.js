@@ -72,5 +72,8 @@ chrome.extension.onRequest.addListener(
         if (request.get_silentMode) {
             sendResponse({silent_mode: getSettings('silentMode')});
         }
+        if (request.init_options) {
+            Options.initOptions();
+        }
     }
 );

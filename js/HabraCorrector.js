@@ -43,10 +43,16 @@ HabraCorrector.prototype.loadErrorListAndAppendDialogBox = function () {
  */
 HabraCorrector.prototype.Init = function () {
     'use strict';
-    if (this.habraPage.isCurrentUrlCorrect()) {
-        this.loadErrorListAndAppendDialogBox();
-    }
-    this.addHotKey();
+    var self = this;
+    chrome.extension.sendRequest({init_options: true});
+
+    setTimeout(function () {
+        if (self.habraPage.isCurrentUrlCorrect()) {
+            self.loadErrorListAndAppendDialogBox();
+            self.addHotKey();
+        }
+    }, 100);
+
 };
 
 /**
@@ -106,9 +112,9 @@ HabraCorrector.prototype.sendRequestToBackgroundPage = function (name, title, me
  *
  * @return {boolean} True, если страница соответствует статье на Хабре, иначе False
  */
-HabraCorrector.prototype.isItArticlePage = function () {
+HabraCorrector.prototype.isItArticlePage = function (self) {
     'use strict';
-    return this.habraPage.isCurrentUrlCorrect();
+    return self.habraPage.isCurrentUrlCorrect();
 };
 
 /**
@@ -123,10 +129,10 @@ HabraCorrector.prototype.startDialog = function () {
         dialogResult,
         self = this;
 
-    if (this.isItArticlePage()) {
-        this.dialogBox.resetDialogFields();
-        this.dialogBox.setDialogContent(author, title, content);
-        dialogResult = this.dialogBox.showDialog(author, title);
+    if (self.isItArticlePage(self)) {
+        self.dialogBox.resetDialogFields();
+        self.dialogBox.setDialogContent(author, title, content);
+        dialogResult = self.dialogBox.showDialog(author, title);
         dialogResult.done(function () {
             self.sendRequestToBackgroundPage(author, title, self.dialogBox.getMessageText());
             self.habraPage.resetState();

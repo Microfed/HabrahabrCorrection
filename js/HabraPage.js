@@ -30,7 +30,7 @@ HabraPage.prototype.isCurrentUrlCorrect = function () {
     if (url.search(this.HABRAHABR_URL) !== -1) {
         isCorrect = true;
     }
-    if (document.getElementById("comments") !== undefined) {
+    if (document.getElementById("comments") !== null) {
         isCorrect = isCorrect && true;
     } else {
         isCorrect = false;

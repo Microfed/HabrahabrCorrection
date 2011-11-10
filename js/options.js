@@ -285,3 +285,22 @@ Options.restore_options = function () {
 
     Options.setTreeInfo();
 };
+
+Options.initOptions = function () {
+    var isAdvtAttachToMessage = Options.getLocalStorageItem('isAdvtAttachToMessage'),
+        isSilentModeOn = Options.getLocalStorageItem('silentMode');
+
+    if (isSilentModeOn === null) {
+        isSilentModeOn = 'false';
+        Options.setLocalStorageItem('silentMode', isSilentModeOn);
+    }
+
+    if (isAdvtAttachToMessage === null) {
+        isAdvtAttachToMessage = 'true';
+        Options.setLocalStorageItem('isAdvtAttachToMessage', isAdvtAttachToMessage);
+    }
+
+    if (Options.getLocalStorageItem('errorList') === undefined || Options.getLocalStorageItem('errorList') === null) {
+        Options.setErrorListFromFile();
+    }
+}
