@@ -4,7 +4,7 @@
  */
 
 /**Текст рекламы*/
-var AD_TEXT = '\n\n<sub>With help <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
+var AD_TEXT = '\n\n<sub>Составлено с помощью <a href="https://chrome.google.com/webstore/detail/kcdmenmdkfpfbdilcpfehcnahhkjfipe">HabraCorrection</a>.</sub>';
 
 /*
  Добавляет в сообщение информацию о расширении в качестве
