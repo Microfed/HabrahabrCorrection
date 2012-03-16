@@ -76,6 +76,8 @@ HabraPage.prototype.getArticleTitle = function () {
         title = $('div.hentry h2.entry-title.single-entry-title span.topic');
     } else if ($('div.post h2.title span.post_title').length > 0) {
         title = $('div.post h2.title span.post_title');
+    } else if($('div.post h1.title span.post_title').length > 0){ // fix https://github.com/Microfed/HabrahabrCorrection/issues/2
+        title = $('div.post h1.title span.post_title');
     }
 
     return title.text();
