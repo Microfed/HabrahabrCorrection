@@ -10,8 +10,7 @@
  */
 var HabraPage = function () {
     'use strict';
-    this.AUTHOR_CLASS_NAME = 'div.vcard.author.full a.fn.nickname.url';
-    this.AUTHOR_CLASS_NAME_MODIFIED = 'div.vcard.author.full a.fn.nickname.url.karmaloaded';
+    this.AUTHOR_CLASS_NAME = 'div.infopanel div.author a';
     this.HABRAHABR_URL = 'habrahabr.ru';
     this.selectedErrors = []; //текущий список выделенных пользователем ошибок
 };
@@ -45,22 +44,16 @@ HabraPage.prototype.isCurrentUrlCorrect = function () {
  */
 HabraPage.prototype.getAuthorName = function () {
     'use strict';
-    var author,
-        length = $(this.AUTHOR_CLASS_NAME).length,
+    var author = '',
         i;
 
-    if (length > 0) {
-        for (i = 0; i < length; i = +1) {
-            if ($(this.AUTHOR_CLASS_NAME).attr('title') === 'Автор текста') {
-                author = $(this.AUTHOR_CLASS_NAME).text();
+    $(this.AUTHOR_CLASS_NAME).each(function (i){
+            if ($(this).attr('title') === 'Автор текста') {
+                author = $(this).text();
             }
         }
-    } else if ($(this.AUTHOR_CLASS_NAME_MODIFIED).length > 0) {
-        // Некоторые расширения для хабры меняют имя класса
-        author = $(this.AUTHOR_CLASS_NAME_MODIFIED).text();
-    } else if ($('div.infopanel div.author a').length > 0) {
-        author = $('div.infopanel div.author a').text();
-    }
+    )
+
     return author;
 };
 
